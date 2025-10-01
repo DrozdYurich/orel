@@ -1,237 +1,233 @@
 <template>
-    <div class="filters-container compact">
-      <div class="filters-header">
-        <h3 class="filters-title">Фильтры</h3>
-        <button 
-          class="clear-filters-btn" 
-          @click="clearFilters"
-          :disabled="!hasActiveFilters"
-        >
-          <span class="pi pi-times"></span>
-        </button>
-      </div>
-  
-      <div class="filters-content">
-        <!-- Фильтр по дате -->
-        <div class="filter-group">
-          <label class="filter-label">Период</label>
-          <div class="date-inputs">
-            <div class="date-input-group">
-              <input 
-                type="date" 
-                v-model="filters.startDate"
-                class="date-input"
-                @change="applyFilters"
-                placeholder="Начало"
-              >
-            </div>
-            <div class="date-input-group">
-              <input 
-                type="date" 
-                v-model="filters.endDate"
-                class="date-input"
-                @change="applyFilters"
-                placeholder="Конец"
-              >
-            </div>
+  <div class="filters-container compact">
+    <div class="filters-header">
+      <h3 class="filters-title">Фильтры</h3>
+      <button 
+        class="clear-filters-btn" 
+        @click="clearFilters"
+        :disabled="!hasActiveFilters"
+      >
+        <span class="pi pi-times"></span>
+      </button>
+    </div>
+
+    <div class="filters-content">
+      <!-- Фильтр по дате -->
+      <div class="filter-group">
+        <label class="filter-label">Период</label>
+        <div class="date-inputs">
+          <div class="date-input-group">
+            <input 
+              type="date" 
+              v-model="localFilters.startDate"
+              class="date-input"
+              @change="applyFilters"
+              placeholder="Начало"
+            >
+          </div>
+          <div class="date-input-group">
+            <input 
+              type="date" 
+              v-model="localFilters.endDate"
+              class="date-input"
+              @change="applyFilters"
+              placeholder="Конец"
+            >
           </div>
         </div>
-  
-        <!-- Фильтр по рейтингу -->
-        <div class="filter-group">
-          <label class="filter-label">Рейтинг</label>
-          <div class="rating-filters">
-            <button 
-              v-for="rating in ratingOptions" 
-              :key="rating.value"
-              class="rating-btn"
-              :class="{ 
-                active: filters.minRating === rating.value,
-                disabled: filters.minRating > rating.value
-              }"
-              @click="toggleRating(rating.value)"
-              :title="rating.label"
-            >
-              <span class="rating-stars">
-                <span 
-                  v-for="star in 5" 
-                  :key="star"
-                  class="star"
-                  :class="{
-                    'filled': star <= rating.value
-                  }"
-                >
-                  ★
-                </span>
+      </div>
+
+      <!-- Фильтр по рейтингу -->
+      <div class="filter-group">
+        <label class="filter-label">Рейтинг</label>
+        <div class="rating-filters">
+          <button 
+            v-for="rating in ratingOptions" 
+            :key="rating.value"
+            class="rating-btn"
+            :class="{ 
+              active: localFilters.minRating === rating.value,
+              disabled: localFilters.minRating > rating.value
+            }"
+            @click="toggleRating(rating.value)"
+            :title="rating.label"
+          >
+            <span class="rating-stars">
+              <span 
+                v-for="star in 5" 
+                :key="star"
+                class="star"
+                :class="{
+                  'filled': star <= rating.value
+                }"
+              >
+                ★
               </span>
-              <span class="rating-value">{{ rating.value }}+</span>
-            </button>
-          </div>
-        </div>
-  
-        <!-- Быстрые фильтры по периоду -->
-        <div class="filter-group">
-          <label class="filter-label">Быстрый выбор</label>
-          <div class="quick-filters">
-            <button 
-              v-for="period in quickPeriods" 
-              :key="period.value"
-              class="quick-filter-btn"
-              :class="{ active: quickPeriod === period.value }"
-              @click="setQuickPeriod(period.value)"
-              :title="period.label"
-            >
-              <span class="pi" :class="period.icon"></span>
-            </button>
-          </div>
+            </span>
+            <span class="rating-value">{{ rating.value }}+</span>
+          </button>
         </div>
       </div>
-  
-      <!-- Статус фильтров -->
-      <div class="filters-status" v-if="hasActiveFilters">
-        <div class="active-filters">
-          <div class="filter-tags">
-            <span 
-              v-if="filters.startDate || filters.endDate" 
-              class="filter-tag"
-            >
-              {{ formatDateRange() }}
-              <span class="tag-remove" @click="clearDateFilter">×</span>
-            </span>
-            <span 
-              v-if="filters.minRating > 0" 
-              class="filter-tag"
-            >
-              {{ filters.minRating }}+★
-              <span class="tag-remove" @click="clearRatingFilter">×</span>
-            </span>
-          </div>
+
+      <!-- Быстрые фильтры по периоду -->
+      <div class="filter-group">
+        <label class="filter-label">Быстрый выбор</label>
+        <div class="quick-filters">
+          <button 
+            v-for="period in quickPeriods" 
+            :key="period.value"
+            class="quick-filter-btn"
+            :class="{ active: quickPeriod === period.value }"
+            @click="setQuickPeriod(period.value)"
+            :title="period.label"
+          >
+            <span class="pi" :class="period.icon"></span>
+          </button>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref, computed, watch } from 'vue'
-  
-  const emit = defineEmits(['filter-change'])
-  
-  // Реактивные данные фильтров
-  const filters = ref({
+
+    <!-- Статус фильтров -->
+    <div class="filters-status" v-if="hasActiveFilters">
+      <div class="active-filters">
+        <div class="filter-tags">
+          <span 
+            v-if="localFilters.startDate || localFilters.endDate" 
+            class="filter-tag"
+          >
+            {{ formatDateRange() }}
+            <span class="tag-remove" @click="clearDateFilter">×</span>
+          </span>
+          <span 
+            v-if="localFilters.minRating > 0" 
+            class="filter-tag"
+          >
+            {{ localFilters.minRating }}+★
+            <span class="tag-remove" @click="clearRatingFilter">×</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { useEventsStore } from '@/stores/storeEvents'
+
+const eventsStore = useEventsStore()
+
+// Локальные фильтры для реактивности
+const localFilters = ref({ ...eventsStore.filters })
+const quickPeriod = ref('')
+
+// Опции для фильтров
+const ratingOptions = [
+  { value: 1, label: '1+ звезда' },
+  { value: 2, label: '2+ звезды' },
+  { value: 3, label: '3+ звезды' },
+  { value: 4, label: '4+ звезды' },
+  { value: 5, label: '5 звезд' }
+]
+
+const quickPeriods = [
+  { value: 'today', label: 'Сегодня', icon: 'pi-sun' },
+  { value: 'week', label: 'На неделе', icon: 'pi-calendar' },
+  { value: 'month', label: 'В этом месяце', icon: 'pi-chart-line' },
+  { value: 'future', label: 'Предстоящие', icon: 'pi-arrow-right' }
+]
+
+// Вычисляемые свойства
+const hasActiveFilters = computed(() => {
+  return eventsStore.hasActiveFilters
+})
+
+// Методы
+const applyFilters = () => {
+  eventsStore.updateFilters({ ...localFilters.value })
+}
+
+const clearFilters = () => {
+  localFilters.value = {
     startDate: '',
     endDate: '',
     minRating: 0
-  })
+  }
+  quickPeriod.value = ''
+  eventsStore.clearFilters()
+}
+
+const clearDateFilter = () => {
+  localFilters.value.startDate = ''
+  localFilters.value.endDate = ''
+  quickPeriod.value = ''
+  applyFilters()
+}
+
+const clearRatingFilter = () => {
+  localFilters.value.minRating = 0
+  applyFilters()
+}
+
+const toggleRating = (rating) => {
+  localFilters.value.minRating = localFilters.value.minRating === rating ? 0 : rating
+  applyFilters()
+}
+
+const setQuickPeriod = (period) => {
+  quickPeriod.value = period
+  const today = new Date()
   
-  const quickPeriod = ref('')
-  
-  // Опции для фильтров
-  const ratingOptions = [
-    { value: 1, label: '1+ звезда' },
-    { value: 2, label: '2+ звезды' },
-    { value: 3, label: '3+ звезды' },
-    { value: 4, label: '4+ звезды' },
-    { value: 5, label: '5 звезд' }
-  ]
-  
-  const quickPeriods = [
-    { value: 'today', label: 'Сегодня', icon: 'pi-sun' },
-    { value: 'week', label: 'На неделе', icon: 'pi-calendar' },
-    { value: 'month', label: 'В этом месяце', icon: 'pi-chart-line' },
-    { value: 'future', label: 'Предстоящие', icon: 'pi-arrow-right' }
-  ]
-  
-  // Вычисляемые свойства
-  const hasActiveFilters = computed(() => {
-    return filters.value.startDate || filters.value.endDate || filters.value.minRating > 0
-  })
-  
-  // Методы
-  const applyFilters = () => {
-    emit('filter-change', { ...filters.value })
+  switch (period) {
+    case 'today':
+      localFilters.value.startDate = formatDate(today)
+      localFilters.value.endDate = formatDate(today)
+      break
+    case 'week':
+      const weekStart = new Date(today)
+      weekStart.setDate(today.getDate() - today.getDay() + 1)
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekStart.getDate() + 6)
+      localFilters.value.startDate = formatDate(weekStart)
+      localFilters.value.endDate = formatDate(weekEnd)
+      break
+    case 'month':
+      const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+      const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+      localFilters.value.startDate = formatDate(monthStart)
+      localFilters.value.endDate = formatDate(monthEnd)
+      break
+    case 'future':
+      localFilters.value.startDate = formatDate(today)
+      localFilters.value.endDate = ''
+      break
   }
   
-  const clearFilters = () => {
-    filters.value = {
-      startDate: '',
-      endDate: '',
-      minRating: 0
-    }
-    quickPeriod.value = ''
-    applyFilters()
+  applyFilters()
+}
+
+const formatDate = (date) => {
+  return date.toISOString().split('T')[0]
+}
+
+const formatDateRange = () => {
+  if (localFilters.value.startDate && localFilters.value.endDate) {
+    const start = localFilters.value.startDate.split('-').reverse().join('.')
+    const end = localFilters.value.endDate.split('-').reverse().join('.')
+    return `${start}-${end}`
+  } else if (localFilters.value.startDate) {
+    return `С ${localFilters.value.startDate.split('-').reverse().join('.')}`
+  } else if (localFilters.value.endDate) {
+    return `По ${localFilters.value.endDate.split('-').reverse().join('.')}`
   }
-  
-  const clearDateFilter = () => {
-    filters.value.startDate = ''
-    filters.value.endDate = ''
-    quickPeriod.value = ''
-    applyFilters()
-  }
-  
-  const clearRatingFilter = () => {
-    filters.value.minRating = 0
-    applyFilters()
-  }
-  
-  const toggleRating = (rating) => {
-    filters.value.minRating = filters.value.minRating === rating ? 0 : rating
-    applyFilters()
-  }
-  
-  const setQuickPeriod = (period) => {
-    quickPeriod.value = period
-    const today = new Date()
-    
-    switch (period) {
-      case 'today':
-        filters.value.startDate = formatDate(today)
-        filters.value.endDate = formatDate(today)
-        break
-      case 'week':
-        const weekStart = new Date(today)
-        weekStart.setDate(today.getDate() - today.getDay() + 1)
-        const weekEnd = new Date(weekStart)
-        weekEnd.setDate(weekStart.getDate() + 6)
-        filters.value.startDate = formatDate(weekStart)
-        filters.value.endDate = formatDate(weekEnd)
-        break
-      case 'month':
-        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
-        const monthEnd = new Date(today.getFullYear(), today.getMonth() + 1, 0)
-        filters.value.startDate = formatDate(monthStart)
-        filters.value.endDate = formatDate(monthEnd)
-        break
-      case 'future':
-        filters.value.startDate = formatDate(today)
-        filters.value.endDate = ''
-        break
-    }
-    
-    applyFilters()
-  }
-  
-  const formatDate = (date) => {
-    return date.toISOString().split('T')[0]
-  }
-  
-  const formatDateRange = () => {
-    if (filters.value.startDate && filters.value.endDate) {
-      const start = filters.value.startDate.split('-').reverse().join('.')
-      const end = filters.value.endDate.split('-').reverse().join('.')
-      return `${start}-${end}`
-    } else if (filters.value.startDate) {
-      return `С ${filters.value.startDate.split('-').reverse().join('.')}`
-    } else if (filters.value.endDate) {
-      return `По ${filters.value.endDate.split('-').reverse().join('.')}`
-    }
-    return ''
-  }
-  
-  // Наблюдатели
-  watch(filters, () => {
-    applyFilters()
-  }, { deep: true })
-  </script>
+  return ''
+}
+
+// Синхронизация с store
+watch(() => eventsStore.filters, (newFilters) => {
+  localFilters.value = { ...newFilters }
+}, { deep: true })
+</script>
   
   <style scoped>
   .filters-container.compact {

@@ -9,10 +9,11 @@ import { createYmaps } from 'vue-yandex-maps';
 import Menubar from 'primevue/menubar'
 
 const app = createApp(App)
+const pinia = createPinia()
 
-app.use(createPinia())
+// Устанавливаем плагины только ОДИН раз
+app.use(pinia) // Убрали дублирующий вызов createPinia()
 app.use(router)
-
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
@@ -22,8 +23,6 @@ app.use(createYmaps({
   apikey: '6515b0e7-ea7d-49ba-9ef0-084b8bda31dd',
   importModules: ['@yandex/ymaps3-controls@0.0.1'],
 }));
-
-
 
 app.component('Menubar', Menubar)
 
