@@ -116,7 +116,7 @@ import { ref, computed, watch } from 'vue'
 import { useEventsStore } from '@/stores/storeEvents'
 
 const eventsStore = useEventsStore()
-
+console.log(eventsStore.filteredEvents)
 // Локальные фильтры для реактивности
 const localFilters = ref({ ...eventsStore.filters })
 const quickPeriod = ref('')

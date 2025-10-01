@@ -31,8 +31,6 @@ export const useEventsStore = defineStore('events', () => {
       featured: false
     }
   ])
-
-  // Фильтры
   const filters = ref({
     startDate: '',
     endDate: '',
