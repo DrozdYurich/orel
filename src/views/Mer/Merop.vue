@@ -5,7 +5,7 @@ import MyEvent from '../Event/MyEvent.vue';
 </script>
 
 <template>
-  <h1>Мероприятия</h1>
+  <h1>Мероприятия Орла</h1>
   <div class="main-container">
     <div class="content-grid">
       <div class="events-section">
@@ -20,9 +20,23 @@ import MyEvent from '../Event/MyEvent.vue';
 </template>
 
 <style scoped>
+h1 {
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .main-container {
   width: 100%;
   padding: 1rem;
+  background: var(--bg-secondary);
+  min-height: 100vh;
 }
 
 .content-grid {
@@ -31,15 +45,20 @@ import MyEvent from '../Event/MyEvent.vue';
   gap: 2rem;
   margin: 0 auto;
   align-items: start;
+ 
 }
 
 .events-section {
   min-width: 0;
   position: sticky;
   top: 5rem;
-  /* Убрал фиксированную высоту - теперь высота определяется содержимым */
   height: fit-content;
-  max-height: calc(100vh - 6rem); /* Максимальная высота, но не фиксированная */
+  max-height: calc(100vh - 6rem);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  overflow: hidden;
 }
 
 .filters-section {
@@ -49,6 +68,29 @@ import MyEvent from '../Event/MyEvent.vue';
   height: fit-content;
   max-height: calc(100vh - 6rem);
   overflow-y: auto;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+
+/* Стили для скроллбара в filters-section */
+.filters-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filters-section::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.filters-section::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: var(--radius-sm);
+}
+
+.filters-section::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 /* Адаптивность для мобильных устройств */
@@ -62,21 +104,61 @@ import MyEvent from '../Event/MyEvent.vue';
   .events-section {
     position: static;
     max-height: none;
+    order: 2;
   }
   
   .filters-section {
     position: static;
     max-height: none;
+    order: 1;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .main-container {
     padding: 0.5rem;
+    background: var(--bg-primary);
   }
   
   .content-grid {
     gap: 1rem;
   }
+  
+  .events-section,
+  .filters-section {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .main-container {
+    padding: 0.25rem;
+  }
+}
+
+/* Плавные переходы для всех интерактивных элементов */
+.events-section,
+.filters-section {
+  transition: all var(--transition-normal);
+}
+
+.events-section:hover,
+.filters-section:hover {
+  box-shadow: var(--shadow-lg);
 }
 </style>
