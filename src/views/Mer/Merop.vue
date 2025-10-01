@@ -1,11 +1,11 @@
 <script setup>
-
 import MyFiltr from '../Filter/MyFiltr.vue';
 import Carta from '../Karta/Carta.vue'
+import MyEvent from '../Event/MyEvent.vue';
 </script>
 
 <template>
-  <h1>Мерпориятия</h1>
+  <h1>Мероприятия</h1>
   <div class="main-container">
     <div class="content-grid">
       <div class="events-section">
@@ -15,6 +15,7 @@ import Carta from '../Karta/Carta.vue'
         <MyFiltr/>
       </div>
     </div>
+    <MyEvent/>
   </div>
 </template>
 
@@ -28,17 +29,26 @@ import Carta from '../Karta/Carta.vue'
   display: grid;
   grid-template-columns: 70% 1fr;
   gap: 2rem;
-  max-width: 1400px;
   margin: 0 auto;
   align-items: start;
 }
 
 .events-section {
   min-width: 0;
+  position: sticky;
+  top: 5rem;
+  /* Убрал фиксированную высоту - теперь высота определяется содержимым */
+  height: fit-content;
+  max-height: calc(100vh - 6rem); /* Максимальная высота, но не фиксированная */
 }
 
 .filters-section {
   min-width: 0;
+  position: sticky;
+  top: 5rem;
+  height: fit-content;
+  max-height: calc(100vh - 6rem);
+  overflow-y: auto;
 }
 
 /* Адаптивность для мобильных устройств */
@@ -46,6 +56,17 @@ import Carta from '../Karta/Carta.vue'
   .content-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+    min-height: auto;
+  }
+  
+  .events-section {
+    position: static;
+    max-height: none;
+  }
+  
+  .filters-section {
+    position: static;
+    max-height: none;
   }
 }
 
@@ -57,4 +78,5 @@ import Carta from '../Karta/Carta.vue'
   .content-grid {
     gap: 1rem;
   }
-}</style>
+}
+</style>
