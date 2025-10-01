@@ -85,7 +85,7 @@ const toggleMobileMenu = () => {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: #78b1ea;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid #cbd5e1;
   box-shadow: 0 2px 20px rgba(100, 116, 139, 0.1);
