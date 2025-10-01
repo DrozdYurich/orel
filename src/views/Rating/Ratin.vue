@@ -10,45 +10,7 @@
     <TopThree :top-events="topEvents"/>
 
     <!-- Остальной рейтинг -->
-    <div class="rating-list-section">
-      <h2 class="section-title">Весь рейтинг</h2>
-      <div class="rating-list">
-        <div 
-          v-for="(event, index) in otherEvents" 
-          :key="event.id" 
-          class="rating-item"
-          :class="{ featured: event.featured }"
-        >
-          <div class="rank-number">#{{ index + 4 }}</div>
-          <div class="event-content">
-            <div class="event-image">
-              <img :src="event.image" :alt="event.title" />
-            </div>
-            <div class="event-details">
-              <h3 class="event-title">{{ event.title }}</h3>
-              <p class="event-description">{{ event.description }}</p>
-              <div class="event-meta">
-                <div class="rating">
-                  <span class="pi pi-star-fill"></span>
-                  <span>{{ event.rating }}</span>
-                </div>
-                <div class="participants">
-                  <span class="pi pi-users"></span>
-                  <span>{{ event.participants }}</span>
-                </div>
-                <div class="date">
-                  <span class="pi pi-calendar"></span>
-                  <span>{{ event.date }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button class="details-btn" @click="viewEventDetails(event.id)">
-            <span class="pi pi-arrow-right"></span>
-          </button>
-        </div>
-      </div>
-    </div>
+   <OtherRating :event="otherEvents" :rank="otherEvents.rating"/>
   </div>
 </template>
 
@@ -56,6 +18,7 @@
 import { ref, computed } from 'vue'
 import { useEventsStore } from '@/stores/storeEvents'
 import TopThree from './TopThree.vue';
+import OtherRating from './OtherRating.vue';
 const {getEvent} = useEventsStore();
 const events = getEvent
 
@@ -66,7 +29,7 @@ const topEvents = computed(() => {
 const otherEvents = computed(() => {
   return events.slice(3)
 })
-
+console.log(otherEvents.value)
 const viewEventDetails = (eventId) => {
   console.log('Просмотр мероприятия:', eventId)
   // Навигация к деталям мероприятия

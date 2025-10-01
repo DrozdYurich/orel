@@ -180,6 +180,7 @@ const podiumClasses = computed(() => ({
   'compact-mode': props.compact,
   'no-animations': !props.showAnimations
 }))
+
   </script>
   
   <style scoped>
