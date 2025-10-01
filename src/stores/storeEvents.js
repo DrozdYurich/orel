@@ -72,7 +72,9 @@ export const useEventsStore = defineStore('events', () => {
       minRating: 0
     }
   }
-
+  const getEvent = computed(() => {
+    return events.value
+  })
   const registerForEvent = (eventId) => {
     const event = events.value.find(e => e.id === eventId)
     if (event) {
@@ -87,6 +89,7 @@ export const useEventsStore = defineStore('events', () => {
     hasActiveFilters,
     updateFilters,
     clearFilters,
-    registerForEvent
+    registerForEvent,
+    getEvent
   }
 })
