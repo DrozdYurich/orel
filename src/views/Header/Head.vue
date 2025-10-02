@@ -30,15 +30,11 @@
         
 
         <!-- Уведомления -->
-        <div class="notifications">
-          <button class="notification-btn" @click="toggleNotifications">
-            <span class="notification-icon pi pi-bell"></span>
-            <span class="notification-badge" v-if="unreadNotifications > 0">
-              {{ unreadNotifications }}
-            </span>
-          </button>
-        </div>
-
+     <div class="notifications">
+  <button class="notification-btn" @click="toggleNotifications">
+    <span class="notification-icon pi pi-calendar"></span>
+  </button>
+</div>
         <!-- Профиль -->
         <div class="profile-menu">
           <button class="profile-btn" @click="toggleProfileMenu">
@@ -74,18 +70,23 @@
         <span class="bar"></span>
       </button>
     </div>
-
-    <!-- Затемнение фона для мобильного меню -->
-    <div class="mobile-overlay" :class="{ active: isMobileMenuOpen }" @click="closeMobileMenu"></div>
+    
+    <div data-aos = "fade-down" class="kalendar" v-if="getKal">
+      <MyKalendar :events="getdata"/>
+    </div>
   </nav>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-
+import MyKalendar from '../Kalendar/MyKalendar.vue'
+import { useKalendarStore } from '@/stores/kalendarstore'
+import { storeToRefs } from 'pinia'
 const router = useRouter()
-
+const kal = useKalendarStore()
+const {getKal} = storeToRefs(kal)
+const {getdata} =useKalendarStore()
 // Reactive state
 const isMobileMenuOpen = ref(false)
 const isProfileMenuOpen = ref(false)
@@ -141,9 +142,6 @@ const toggleMobileMenu = () => {
   isProfileMenuOpen.value = false
 }
 
-const closeMobileMenu = () => {
-  isMobileMenuOpen.value = false
-}
 
 const handleMenuClick = () => {
   isMobileMenuOpen.value = false
@@ -154,30 +152,15 @@ const toggleProfileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
-const toggleSearch = () => {
-  isSearchActive.value = !isSearchActive.value
-  if (!isSearchActive.value) {
-    searchQuery.value = ''
-  }
-}
 
-const closeSearch = () => {
-  isSearchActive.value = false
-  searchQuery.value = ''
-}
 
-const onSearchBlur = () => {
-  if (!searchQuery.value) {
-    setTimeout(() => {
-      isSearchActive.value = false
-    }, 200)
-  }
-}
+
+
+
 
 const toggleNotifications = () => {
-  // Logic for notifications
-  console.log('Toggle notifications')
-  unreadNotifications.value = 0
+  kal.setShow()
+  console.log(getKal.value)
 }
 
 const handleLogout = () => {
@@ -197,7 +180,9 @@ onUnmounted(() => {
 
 <style scoped>
 
-
+.kalendar{
+  padding: 10px;
+}
 /* Base Header Styles */
 .header {
   position: fixed;
