@@ -23,17 +23,22 @@ const {getEvent} = useEventsStore();
 const events = getEvent
 
 const topEvents = computed(() => {
-  return events.slice(0, 3)
+  return [...events]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 3)
 })
 
 const otherEvents = computed(() => {
-  return events.slice(3)
+  return [...events]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(3)
 })
 console.log(otherEvents.value)
 const viewEventDetails = (eventId) => {
   console.log('Просмотр мероприятия:', eventId)
   // Навигация к деталям мероприятия
 }
+console.log(topEvents,'top')
 </script>
 
 <style scoped>

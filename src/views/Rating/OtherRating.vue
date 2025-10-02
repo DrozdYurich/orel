@@ -1,6 +1,9 @@
 <template>
     <div data-aos = "flip-up" class="rating-item" >
-      <div class="rank-number">#{{ event.rating }}</div>
+      <div class="rank-number">
+            {{ event.rating }}
+        <span class="star"  >★</span>
+    </div>
       <div class="event-content">
         <div class="event-image">
           <img :src="event.image" :alt="event.title" />
@@ -31,9 +34,9 @@
   </template>
   
   <script setup>
-  import { computed } from 'vue'
-  
-  // Пропсы компонента
+  import { computed, onMounted } from 'vue'
+  import { useEventsStore } from '@/stores/storeEvents'
+  const ev = useEventsStore()
   const props = defineProps({
     // Обязательные пропсы
     event: {
@@ -129,9 +132,19 @@
     'no-meta': !props.showMeta,
     ...props.customClasses
   }))
+  onMounted(()=>{
+    ev.fetchEvents()
+  })
   </script>
   
   <style scoped>
+  .star {
+  color: #f59e0b;
+  font-size: 1.1rem;
+}
+.star.active {
+  color: #f59e0b;
+}
   .rating-item {
     display: flex;
     align-items: center;
