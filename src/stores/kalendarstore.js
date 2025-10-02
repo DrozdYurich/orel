@@ -25,9 +25,15 @@ export const useKalendarStore = defineStore('kalendar', () => {
     description: 'Праздничные мероприятия по всему городу',
     location: 'Центральная площадь'
   }])
-  function setShow(){
+  function setShow(value) {
+  if (value === true || value === false) {
+    // Явно задано булево → устанавливаем
+    showKalendar.value = value
+  } else {
+    // Ничего не передано → переключаем
     showKalendar.value = !showKalendar.value
   }
+}
   const getdata = computed(() => {
     return data.value
   })

@@ -6,6 +6,8 @@ import Root from '@/views/Rot/Root.vue'
 import Victorint from '@/views/Vict/Victorint.vue'
 import Home from '@/views/Home.vue'
 import Profil from '@/views/profile/Profil.vue'
+import AuthForm from '@/views/Auth/AuthForm.vue'
+import Cabinet from '@/views/Cabinet/Cabinet.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -43,6 +45,16 @@ const router = createRouter({
       path: '/profil',
       name: 'profil',
       component: Profil,
+    },
+    {
+      path: '/auth',
+      name: 'auth',
+      component: AuthForm,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: Cabinet,
     },
   ],
 })

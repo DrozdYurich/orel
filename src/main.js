@@ -9,10 +9,12 @@ import { createYmaps } from 'vue-yandex-maps';
 import Menubar from 'primevue/menubar'
 import AOS from "aos";
 import "aos/dist/aos.css";
+import axios from 'axios';
+export const apiClient = axios.create({
+  baseURL: 'http://10.11.121.199:8000', 
+});
 const app = createApp(App)
 const pinia = createPinia()
-
-// Устанавливаем плагины только ОДИН раз
 app.use(pinia) // Убрали дублирующий вызов createPinia()
 app.use(router)
 app.use(PrimeVue, {

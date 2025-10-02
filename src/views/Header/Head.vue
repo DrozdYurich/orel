@@ -35,32 +35,35 @@
     <span class="notification-icon pi pi-calendar"></span>
   </button>
 </div>
-        <!-- Профиль -->
-        <div class="profile-menu">
-          <button class="profile-btn" @click="toggleProfileMenu">
-            <div class="avatar">
-              <span class="avatar-text">{{ userInitials }}</span>
-            </div>
-            <span class="profile-name">{{ userName }}</span>
-            <span class="dropdown-icon pi pi-chevron-down"></span>
-          </button>
-          
-          <div class="profile-dropdown" :class="{ active: isProfileMenuOpen }">
-            <router-link to="/profile" class="dropdown-item">
-              <span class="dropdown-icon pi pi-user"></span>
-              Мой профиль
-            </router-link>
-            <router-link to="/settings" class="dropdown-item">
-              <span class="dropdown-icon pi pi-cog"></span>
-              Настройки
-            </router-link>
-            <div class="dropdown-divider"></div>
-            <button class="dropdown-item logout-btn" @click="handleLogout">
-              <span class="dropdown-icon pi pi-sign-out"></span>
-              Выйти
-            </button>
-          </div>
-        </div>
+       <!-- Условный рендеринг: профиль или кнопка входа -->
+  <div v-if="getAuth" class="profile-menu"  >
+    <button class="profile-btn" @click="toggleProfileMenu">
+      <div class="avatar">
+        <span class="avatar-text">{{ userInitials }}</span>
+      </div>
+      <span class="profile-name">{{ getUser.login || getUser.user || 'Пользователь' }}</span>
+      <span class="dropdown-icon pi pi-chevron-down"></span>
+    </button>
+
+    <div class="profile-dropdown" :class="{ active: isProfileMenuOpen }">
+      <router-link to="/profile" class="dropdown-item" @click="closeMenus">
+        <span class="dropdown-icon pi pi-user"></span>
+        Мой профиль
+      </router-link>
+      <div class="dropdown-divider"></div>
+      <button class="dropdown-item logout-btn" @click="handleLogout">
+        <span class="dropdown-icon pi pi-sign-out"></span>
+        Выйти
+      </button>
+    </div>
+  </div>
+
+  <!-- Кнопка "Войти", если не авторизован -->
+  <div v-else>
+    <router-link to="/auth" class="login-btn">
+      <span class="pi pi-user"></span>
+    </router-link>
+  </div>
       </div>
 
       <!-- Мобильное меню -->
@@ -83,18 +86,18 @@ import { useRouter } from 'vue-router'
 import MyKalendar from '../Kalendar/MyKalendar.vue'
 import { useKalendarStore } from '@/stores/kalendarstore'
 import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/useUserStore' 
 const router = useRouter()
+const {getAuth,getUser} = storeToRefs(useUserStore())
 const kal = useKalendarStore()
 const {getKal} = storeToRefs(kal)
 const {getdata} =useKalendarStore()
 // Reactive state
 const isMobileMenuOpen = ref(false)
 const isProfileMenuOpen = ref(false)
-const isSearchActive = ref(false)
 const isScrolled = ref(false)
-const searchQuery = ref('')
-const unreadNotifications = ref(3)
-
+console.log(getAuth.value,":a")
+console.log(getUser.value,":u")
 // User data
 const userName = 'Алексей'
 const userInitials = computed(() => 
@@ -130,7 +133,11 @@ const navItems = [
   },
 
 ]
-
+const closeMenus = () => {
+  isMobileMenuOpen.value = false
+  isProfileMenuOpen.value = false
+  kal.setShow(false) // если нужно скрыть календарь
+}
 // Scroll handler
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20
@@ -145,6 +152,8 @@ const toggleMobileMenu = () => {
 
 const handleMenuClick = () => {
   isMobileMenuOpen.value = false
+  kal.setShow(false)
+  closeMenus()
 }
 
 const toggleProfileMenu = () => {
@@ -175,6 +184,14 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
+})
+// Закрытие меню при клике вне его
+
+
+
+
+onUnmounted(() => {
+  window.removeEventListener('click', handleClickOutside)
 })
 </script>
 

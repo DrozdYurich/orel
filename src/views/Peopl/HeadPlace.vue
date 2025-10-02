@@ -1,5 +1,5 @@
 <template>
-  <div class="scenic-places">
+  <div data-aos = "fade-down" class="scenic-places">
     <!-- Hero секция -->
     <section class="hero-section">
       <div class="hero-background">
@@ -10,12 +10,14 @@
           </div>
         </div>
       </div>
-      <div class="hero-content">
-        <h1 class="hero-title">
-          Живописные места
-          <span class="gradient-text">России</span>
-        </h1>
-        <p class="hero-subtitle">Откройте для себя удивительную красоту российских пейзажей</p>
+      <div  class="hero-content">
+   
+            <h1  class="hero-title">
+              Живописные места
+              <span class="gradient-text">России</span>
+            </h1>
+    
+        <p  class="hero-subtitle">Откройте для себя удивительную красоту российских пейзажей</p>
       </div>
     </section>  
   </div>
@@ -26,7 +28,7 @@
 
 <style scoped>
 .scenic-places {
-  min-height: 90vh;
+  min-height: 80vh;
   background: var(--bg-secondary);
 }
 
