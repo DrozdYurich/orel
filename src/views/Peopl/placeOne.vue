@@ -1,37 +1,50 @@
 <template>
-  <div  class="place-card-wrapper">
-    <div   class="place-card">
-      <div data-aos = "fade-right" class="card-image">
-        <img :src="place.image" :alt="place.name" loading="lazy" />
+  <div class="place-card-wrapper">
+    <div class="place-card">
+      <div data-aos="fade-right" class="card-image">
+        <img :src="place.photo_url" :alt="place.name" loading="lazy" />
         <div class="card-overlay">
           <div class="place-badge">
             {{ place.type }}
           </div>
-          <button class="favorite-btn" @click.stop="toggleFavorite(place)">
-            <i
-              class="pi"
-              :class="place.isFavorite ? 'pi-heart-fill' : 'pi-heart'"
-            ></i>
-          </button>
+          <!-- Кнопка избранного УДАЛЕНА -->
         </div>
       </div>
 
-      <div data-aos = "fade-left"  class="card-content">
+      <div data-aos="fade-left" class="card-content">
         <h3 class="place-name">{{ place.name }}</h3>
+        
+        <!-- Новое: spot_type как бейдж -->
+        <div v-if="place.spot_type" class="spot-type-badge">
+          {{ translateSpotType(place.spot_type) }}
+        </div>
+
+        <!-- Новое: title как подзаголовок -->
+        <p v-if="place.title" class="place-title">
+          {{ place.title }}
+        </p>
+
         <p class="place-location">
           <i class="pi pi-map-marker"></i>
-          {{ place.region }}
+          {{ place.address }}
         </p>
+
         <p class="place-description">{{ place.description }}</p>
 
-        <div class="place-stats">
-          <div class="stat">
-            <i class="pi pi-star"></i>
-            <span>{{ place.rating }}</span>
+        <!-- Новое: история -->
+        <div v-if="place.history" class="place-history">
+          <div class="history-header">
+            <i class="pi pi-book"></i>
+            <span>История</span>
           </div>
+          <p class="history-text">{{ place.history }}</p>
+        </div>
+
+        <!-- Обновлённые статы: только рейтинг -->
+        <div class="place-stats" v-if="place.rating != null">
           <div class="stat">
-            <i class="pi pi-clock"></i>
-            <span>{{ place.bestSeason }}</span>
+            <i class="pi pi-star-fill"></i>
+            <span>{{ place.rating }}</span>
           </div>
         </div>
       </div>
@@ -46,27 +59,37 @@ const props = defineProps({
     required: true,
   },
 })
+function translateSpotType(spotType) {
+  const translations = {
+    PARK: "Парк",
+    ESTATE: "Усадьба",
+    CASTLE: "Крепость",
+    MONUMENT: "Памятник",
+    NATURAL: "Природа",
+    HISTORICAL: "История",
+    ARCHITECTURAL: "Архитектура",
+    RELOGIOS: "Религия"
+  };
 
-const toggleFavorite = (place) => {
-  // Реализуйте логику в родителе через emit, если нужно
-  console.log('toggle favorite', place)
+  return translations[spotType] ?? spotType; // возвращает оригинальное значение, если нет перевода
 }
 </script>
 
 <style scoped>
 .place-card-wrapper {
-  position: relative;
+
   border-radius: var(--radius-lg);
   overflow: hidden;
   isolation: isolate;
+  border: #f59e0b;
 }
 
-/* Выразительный градиентный бордер */
+/* Градиентный бордер — без изменений */
 .place-card-wrapper::before {
   content: '';
   position: absolute;
   inset: 0;
-  padding: 2.5px; /* Увеличена толщина для выразительности */
+  padding: 2.5px;
   background: var(--primary-gradient);
   border-radius: var(--radius-lg);
   -webkit-mask: 
@@ -78,7 +101,6 @@ const toggleFavorite = (place) => {
   z-index: 1;
 }
 
-/* Внутренняя подсветка для глубины */
 .place-card-wrapper::after {
   content: '';
   position: absolute;
@@ -97,7 +119,6 @@ const toggleFavorite = (place) => {
   transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
-  
   position: relative;
   z-index: 2;
 }
@@ -161,36 +182,27 @@ const toggleFavorite = (place) => {
   pointer-events: none;
 }
 
-.favorite-btn {
-  background: rgba(255, 255, 255, 0.92);
-  border: none;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-  pointer-events: auto;
+/* Новое: бейдж типа локации */
+.spot-type-badge {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  border: 1px solid #bae6fd;
 }
 
-.favorite-btn:hover {
-  background: white;
-  transform: scale(1.12);
-  box-shadow: var(--shadow-md);
-}
-
-.favorite-btn .pi {
-  font-size: 1.25rem;
-  color: #cbd5e1;
-  transition: color var(--transition-fast);
-}
-
-.favorite-btn:hover .pi,
-.place-card:hover .favorite-btn .pi-heart-fill {
-  color: #f5576c;
+/* Новое: подзаголовок title */
+.place-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+  font-style: italic;
 }
 
 .card-content {
@@ -230,6 +242,37 @@ const toggleFavorite = (place) => {
   flex-grow: 1;
 }
 
+/* Новое: блок истории */
+.place-history {
+  margin: 1.25rem 0;
+  padding: 1rem;
+  background: rgba(248, 250, 252, 0.6);
+  border-radius: var(--radius-md);
+  border-left: 3px solid #94a3b8;
+}
+
+.history-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.history-header .pi {
+  color: #64748b;
+}
+
+.history-text {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Статы: только рейтинг */
 .place-stats {
   display: flex;
   gap: 1.25rem;
@@ -246,7 +289,7 @@ const toggleFavorite = (place) => {
 }
 
 .stat .pi {
-  color: #f5576c;
+  color: #f59e0b;
   font-size: 1.125rem;
 }
 
@@ -264,6 +307,9 @@ const toggleFavorite = (place) => {
     inset: 2px;
     border-radius: calc(var(--radius-lg) - 2px);
   }
-}
 
+  .card-content {
+    padding: 1.25rem;
+  }
+}
 </style>

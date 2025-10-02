@@ -1,5 +1,6 @@
 <template>
-  <div class="rating-page">
+ 
+  <div  class="rating-page">
     <!-- Заголовок -->
     <div class="page-header">
       <h1 class="page-title">Рейтинг мероприятий</h1>
@@ -15,21 +16,22 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useEventsStore } from '@/stores/storeEvents'
 import TopThree from './TopThree.vue';
 import OtherRating from './OtherRating.vue';
+const ev = useEventsStore()
 const {getEvent} = useEventsStore();
-const events = getEvent
+const events = computed(() => ev.getEvent)
 
 const topEvents = computed(() => {
-  return [...events]
+  return [...events.value]
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 3)
 })
 
 const otherEvents = computed(() => {
-  return [...events]
+  return [...events.value]
     .sort((a, b) => b.rating - a.rating)
     .slice(3)
 })
@@ -38,6 +40,9 @@ const viewEventDetails = (eventId) => {
   console.log('Просмотр мероприятия:', eventId)
   // Навигация к деталям мероприятия
 }
+onMounted(()=>{
+  ev.fetchEvents()
+})
 console.log(topEvents,'top')
 </script>
 

@@ -11,7 +11,7 @@
             <div class="podium-content">
               <div class="event-card">
                 <div class="event-image">
-                  <img :src="topEvents[1]?.image" :alt="topEvents[1]?.title" />
+                  <img :src="topEvents[1]?.photo_url" :alt="topEvents[1]?.title" />
                   <div class="image-overlay"></div>
                 </div>
                 <div class="event-info">
@@ -45,7 +45,7 @@
             <div class="podium-content">
               <div class="event-card">
                 <div class="event-image">
-                  <img :src="topEvents[0]?.image" :alt="topEvents[0]?.title" />
+                  <img :src="topEvents[0]?.photo_url" :alt="topEvents[0]?.title" />
                   <div class="image-overlay"></div>
                   <div class="crown-icon">
                     <span class="pi pi-crown"></span>
@@ -82,7 +82,7 @@
             <div class="podium-content">
               <div class="event-card">
                 <div class="event-image">
-                  <img :src="topEvents[2]?.image" :alt="topEvents[2]?.title" />
+                  <img :src="topEvents[2]?.photo_url" :alt="topEvents[2]?.title" />
                   <div class="image-overlay"></div>
                 </div>
                 <div class="event-info">

@@ -1,8 +1,13 @@
 <script setup>
+import { onMounted } from 'vue';
 import HeadPlace from './HeadPlace.vue';
 import PlaceOne from './placeOne.vue';
 import { usePlaceStore } from '@/stores/storePlace';
  const {getPlace}= usePlaceStore()
+ const pl = usePlaceStore()
+ onMounted(()=>{
+  pl.fetchEvents()
+ })
 </script>
 
 <template>
@@ -21,6 +26,7 @@ import { usePlaceStore } from '@/stores/storePlace';
 }
 .place {
   display: grid;
+  margin-top: 14rem;
   grid-template-columns: repeat(3, 1fr); /* Две колонки */
   gap: 1rem;
 }

@@ -6,7 +6,7 @@
     </div>
       <div class="event-content">
         <div class="event-image">
-          <img :src="event.image" :alt="event.title" />
+          <img :src="event.photo_url" :alt="event.title" />
         </div>
         <div class="event-details">
           <h3 class="event-title">{{ event.title }}</h3>

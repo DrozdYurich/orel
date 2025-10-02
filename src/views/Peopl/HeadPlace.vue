@@ -28,7 +28,7 @@
 
 <style scoped>
 .scenic-places {
-  min-height: 80vh;
+ 
   background: var(--bg-secondary);
 }
 
@@ -42,14 +42,7 @@
   overflow: hidden;
 }
 
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--primary-gradient);
-}
+
 
 .gradient-overlay {
   position: absolute;
@@ -139,42 +132,7 @@
   color: var(--text-muted);
 }
 
-/* Filters Section */
-.filters-section {
-  background: var(--bg-primary);
-  padding: 3rem 0;
-  border-bottom: 1px solid var(--border-light);
-}
 
-.filters-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.filter-group label {
-  display: block;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.filter-select {
-  position: relative;
-  padding: 1rem 1.5rem;
-  background: var(--bg-primary);
-  border: 2px solid var(--border-light);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: var(--transition-normal);
-  display: flex;
-  justify-content: between;
-  align-items: center;
-}
-
-.filter-select:hover {
-  border-color: var(--border-medium);
-}
 
 .dropdown-menu {
   position: absolute;
@@ -182,7 +140,7 @@
   left: 0;
   right: 0;
   background: var(--bg-primary);
-  border: 1px solid var(--border-light);
+ 
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   z-index: var(--z-dropdown);
@@ -232,7 +190,7 @@
 .season-btn {
   padding: 1rem;
   background: var(--bg-secondary);
-  border: 2px solid var(--border-light);
+ 
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: var(--transition-normal);

@@ -85,6 +85,11 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import MyKalendar from '../Kalendar/MyKalendar.vue'
 import { useKalendarStore } from '@/stores/kalendarstore'
+import { useVictStore } from '@/stores/storeVict'
+import { useEventsStore } from '@/stores/storeEvents'
+import { useRoutingStore } from '@/stores/storeRouting'
+import { usePlaceStore } from '@/stores/storePlace'
+
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/useUserStore' 
 const router = useRouter()

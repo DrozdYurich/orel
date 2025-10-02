@@ -2,16 +2,12 @@
 import CardVict from './CardVict.vue';
 import { useVictStore } from '@/stores/storeVict';
 import { ref, onMounted } from 'vue';
-
+const qz = useVictStore()
 const { getVict } = useVictStore();
-const isLoaded = ref(false);
-
 onMounted(() => {
-  // Задержка для плавного появления после загрузки данных
-  setTimeout(() => {
-    isLoaded.value = true;
-  }, 100);
+  qz.fetchEvents()
 });
+console.log(getVict,'ffffffffffffffff')
 </script>
 
 <template>
@@ -19,7 +15,7 @@ onMounted(() => {
     <h1 class="title">Наши достижения</h1>
     <div 
       class="cards-container"
-      :class="{ 'loaded': isLoaded }"
+     
     >
       <CardVict  data-aos="flip-left"
         v-for="(value, index) in getVict" 
@@ -50,7 +46,7 @@ onMounted(() => {
   flex-wrap: wrap;
   justify-content: center;
   gap: 30px;
-  opacity: 0;
+
   transform: translateY(30px);
   transition: all 0.8s ease;
 }

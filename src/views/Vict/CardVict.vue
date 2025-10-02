@@ -1,15 +1,10 @@
 <template>
-  <div class="quiz-card">
+  <div class="quiz-card" data-aos="fade-up">
     <!-- Верхняя часть с градиентом -->
-    <div class="quiz-header" :style="{ background: quiz.gradient }">
+    <div class="quiz-header">
       <div class="header-overlay"></div>
-      <div class="quiz-badge" :class="quiz.difficulty">
-        {{ quiz.difficulty }}
-      </div>
-      <div class="quiz-image">
-        <div class="icon-wrapper">
-          <i :class="quiz.icon"></i>
-        </div>
+      <div class="quiz-badge">
+        {{ quiz.prize }}
       </div>
       <div class="header-shape"></div>
     </div>
@@ -25,101 +20,84 @@
         <p class="quiz-description">{{ quiz.description }}</p>
       </div>
 
-      <!-- Статистика викторины -->
+      <!-- Упрощённая статистика: только количество вопросов -->
       <div class="quiz-stats">
-        <div class="stat-item" v-for="stat in stats" :key="stat.label">
+        <div class="stat-item">
           <div class="stat-icon">
-            <i :class="stat.icon"></i>
+            <i class="pi pi-question"></i>
           </div>
-          <span class="stat-value">{{ stat.value }}</span>
-          <span class="stat-label">{{ stat.label }}</span>
-        </div>
-      </div>
-
-      <!-- Теги категорий -->
-      <div class="quiz-tags">
-        <span 
-          v-for="tag in quiz.tags" 
-          :key="tag"
-          class="tag"
-        >
-          <span class="tag-dot"></span>
-          {{ tag }}
-        </span>
-      </div>
-
-      <!-- Рейтинг -->
-      <div class="quiz-rating">
-        <div class="stars-wrapper">
-          <div 
-            v-for="star in 5" 
-            :key="star"
-            class="star-container"
-            :class="{ 'filled': star <= quiz.rating }"
-          >
-            <i class="pi pi-star"></i>
-          </div>
-        </div>
-        <div class="rating-badge">
-          {{ quiz.rating }}/5
+          <span class="stat-value">{{ quiz.questions_count }}</span>
+          <span class="stat-label">вопросов</span>
         </div>
       </div>
     </div>
-
-    <!-- Декоративные элементы -->
-    <div class="decoration-corner top-left"></div>
-    <div class="decoration-corner top-right"></div>
-    <div class="decoration-corner bottom-left"></div>
-    <div class="decoration-corner bottom-right"></div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
 const props = defineProps({
   quiz: {
     type: Object,
     required: true,
+    validator: (q) => q.title && q.description && q.prize !== undefined && q.questions_count !== undefined
   }
 })
-
-const stats = computed(() => [
-  { icon: 'pi pi-question', value: props.quiz.questionsCount, label: 'вопросов' },
-  { icon: 'pi pi-clock', value: props.quiz.duration, label: 'мин' },
-  { icon: 'pi pi-users', value: props.quiz.participants, label: 'участников' }
-])
 </script>
 
 <style scoped>
+/* Цветовая палитра — твои тона, но с живостью */
+.quiz-card,
+.quiz-card * {
+  --primary-500: #8b5cf6;
+  --primary-600: #7c3aed;
+  --primary-700: #6d28d9;
+  --accent-500: #6366f1;
+  --accent-600: #4f46e5;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --text-primary: #1e1b4b;
+  --text-secondary: #4c4a73;
+  --text-muted: #7c7a9d;
+  --border-light: #e5e7eb;
+  --border-medium: #d1d5db;
+  --primary-gradient: linear-gradient(135deg, var(--accent-500), var(--primary-500));
+  --shadow-sm: 0 2px 6px rgba(139, 92, 246, 0.12);
+  --shadow-lg: 0 10px 25px rgba(109, 40, 217, 0.15);
+  --shadow-xl: 0 20px 40px rgba(109, 40, 217, 0.2);
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --transition-normal: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 .quiz-card {
   position: relative;
   background: var(--bg-primary);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  transition: all var(--transition-normal);
+  transition: var(--transition-normal);
   max-width: 400px;
   margin: 0 auto;
   border: 1px solid var(--border-light);
-  backdrop-filter: blur(10px);
 }
 
 .quiz-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-8px) scale(1.015);
   box-shadow: var(--shadow-xl);
-  border-color: var(--border-medium);
+  border-color: var(--primary-500);
 }
 
-/* Хедер */
+/* Хедер — насыщенный градиент */
 .quiz-header {
   position: relative;
-  height: 140px;
-  padding: 24px;
+  height: 120px;
+  padding: 16px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   overflow: hidden;
+  background: var(--primary-gradient); /* яркий градиент */
 }
 
 .header-overlay {
@@ -128,96 +106,65 @@ const stats = computed(() => [
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%);
 }
 
 .header-shape {
   position: absolute;
-  bottom: -20px;
-  left: -20px;
-  width: 120px;
-  height: 120px;
-  background: rgba(255, 255, 255, 0.1);
+  bottom: -15px;
+  left: -15px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
 }
 
+/* Бейдж — теперь с насыщенным фоном */
 .quiz-badge {
   position: relative;
   z-index: 2;
-  padding: 8px 16px;
-  border-radius: var(--radius-lg);
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: var(--text-on-gradient);
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow-sm);
+  
+  /* Цветной градиент вместо полупрозрачного */
+  background: linear-gradient(135deg, var(--accent-600), var(--primary-600));
+  color: white;
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
+  
+  white-space: normal;
+  word-break: break-word;
+  text-align: center;
+  max-width: calc(100% - 32px);
+  line-height: 1.3;
 }
 
-.quiz-badge.easy {
-  background: linear-gradient(135deg, rgba(67, 233, 123, 0.9) 0%, rgba(56, 249, 215, 0.9) 100%);
-}
-
-.quiz-badge.medium {
-  background: linear-gradient(135deg, rgba(79, 172, 254, 0.9) 0%, rgba(0, 242, 254, 0.9) 100%);
-}
-
-.quiz-badge.hard {
-  background: linear-gradient(135deg, rgba(240, 147, 251, 0.9) 0%, rgba(245, 87, 108, 0.9) 100%);
-}
-
-.quiz-image {
-  position: relative;
-  z-index: 2;
-}
-
-.icon-wrapper {
-  width: 70px;
-  height: 70px;
-  background: rgba(255, 255, 255, 0.25);
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
-}
-
-.quiz-card:hover .icon-wrapper {
-  transform: scale(1.1) rotate(5deg);
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.quiz-image i {
-  font-size: 32px;
-  color: var(--text-on-gradient);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-/* Контент */
 .quiz-content {
-  padding: 28px;
+  padding: 20px 20px 24px;
   position: relative;
   z-index: 2;
 }
 
 .title-wrapper {
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
+/* Заголовок — градиентный текст */
 .quiz-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.3;
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Градиентный текст из твоей палитры */
+  background: linear-gradient(135deg, var(--primary-600), var(--accent-500));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -225,29 +172,31 @@ const stats = computed(() => [
 
 .title-accent {
   position: absolute;
-  bottom: -4px;
+  bottom: -3px;
   left: 0;
-  width: 40px;
+  width: 36px;
   height: 3px;
-  background: var(--primary-gradient);
+  background: var(--primary-gradient); /* яркая акцентная полоса */
   border-radius: 2px;
 }
 
 .quiz-description {
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 24px;
-  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-size: 0.93rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* Статистика */
+/* Статистика — цветной фон */
 .quiz-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 24px;
-  padding: 20px;
-  background: var(--bg-secondary);
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(139, 92, 246, 0.04); /* очень мягкий фиолетовый тон */
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-light);
 }
@@ -256,208 +205,68 @@ const stats = computed(() => [
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .stat-icon {
-  width: 44px;
-  height: 44px;
-  background: var(--bg-primary);
+  width: 40px;
+  height: 40px;
+  background: white;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-light);
+  border: 2px solid var(--primary-500); /* цветная рамка */
 }
 
 .stat-icon i {
-  font-size: 18px;
-  color: var(--text-muted);
+  font-size: 16px;
+  color: var(--primary-600); /* насыщенный фиолетовый */
 }
 
 .stat-value {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--primary-700); /* тёмно-фиолетовый */
 }
 
 .stat-label {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
 }
 
-/* Теги */
-.quiz-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.tag {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: var(--radius-md);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-on-gradient);
-  background: var(--accent-gradient);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-fast);
-}
-
-.tag:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.tag-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--text-on-gradient);
-  border-radius: 50%;
-  opacity: 0.8;
-}
-
-/* Рейтинг */
-.quiz-rating {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  background: var(--bg-secondary);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-}
-
-.stars-wrapper {
-  display: flex;
-  gap: 6px;
-}
-
-.star-container {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  transition: all var(--transition-fast);
-}
-
-.star-container.filled {
-  background: var(--success-gradient);
-  border-color: transparent;
-}
-
-.star-container i {
-  font-size: 14px;
-  color: var(--text-muted);
-  transition: all var(--transition-fast);
-}
-
-.star-container.filled i {
-  color: #ffffff;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-}
-
-.rating-badge {
-  padding: 6px 12px;
-  background: var(--primary-gradient);
-  color: var(--text-on-gradient);
-  border-radius: var(--radius-md);
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: var(--shadow-sm);
-}
-
-/* Декоративные углы */
-.decoration-corner {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  opacity: 0.1;
-  pointer-events: none;
-}
-
-.decoration-corner::before {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--text-primary);
-}
-
-.top-left {
-  top: 0;
-  left: 0;
-}
-
-.top-left::before {
-  top: 10px;
-  left: 10px;
-  border-right: none;
-  border-bottom: none;
-}
-
-.top-right {
-  top: 0;
-  right: 0;
-}
-
-.top-right::before {
-  top: 10px;
-  right: 10px;
-  border-left: none;
-  border-bottom: none;
-}
-
-.bottom-left {
-  bottom: 0;
-  left: 0;
-}
-
-.bottom-left::before {
-  bottom: 10px;
-  left: 10px;
-  border-right: none;
-  border-top: none;
-}
-
-.bottom-right {
-  bottom: 0;
-  right: 0;
-}
-
-.bottom-right::before {
-  bottom: 10px;
-  right: 10px;
-  border-left: none;
-  border-top: none;
-}
-
 /* Адаптивность */
 @media (max-width: 480px) {
-  .quiz-stats {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  
-  .quiz-content {
-    padding: 20px;
+  .quiz-card {
+    max-width: 100%;
   }
   
   .quiz-header {
-    height: 120px;
-    padding: 20px;
+    height: 110px;
+    padding: 12px;
+  }
+  
+  .quiz-badge {
+    font-size: 11px;
+    padding: 5px 10px;
+    max-width: calc(100% - 24px);
+  }
+  
+  .quiz-content {
+    padding: 16px;
+  }
+  
+  .quiz-title {
+    font-size: 1.25rem;
+  }
+  
+  .quiz-description {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 4;
   }
 }
 </style>
