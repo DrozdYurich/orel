@@ -264,7 +264,7 @@ const getWarmColor = (count) => {
 }
 
 .calendar-day.has-event:hover {
-  background: #4463ee;
+  background: #667eea;
   transform: scale(1.03);
   z-index: 2;
 }

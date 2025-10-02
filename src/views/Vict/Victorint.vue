@@ -4,8 +4,14 @@ import { useVictStore } from '@/stores/storeVict';
 import { ref, onMounted } from 'vue';
 const qz = useVictStore()
 const { getVict } = useVictStore();
-onMounted(() => {
-  qz.fetchEvents()
+const loading = ref(true); // состояние загрузки
+
+onMounted(async () => {
+  try {
+    await qz.fetchEvents(); // предполагается, что fetchEvents возвращает Promise
+  } finally {
+    loading.value = false;
+  }
 });
 console.log(getVict,'ffffffffffffffff')
 </script>
@@ -13,12 +19,19 @@ console.log(getVict,'ffffffffffffffff')
 <template>
   <div class="container">
     <h1 class="title">Наши достижения</h1>
+
+    <!-- Показываем загрузку или карточки -->
+    <div v-if="loading" class="loading">
+      Загрузка...
+    </div>
+
     <div 
+      v-else
       class="cards-container"
-     
     >
-      <CardVict  data-aos="flip-left"
-        v-for="(value, index) in getVict" 
+      <CardVict
+        data-aos="flip-left"
+        v-for="(value, index) in getVict"
         :key="value.id || index"
         :quiz="value"
         class="card-item"

@@ -1,8 +1,12 @@
-<script setup></script>
+<script setup>
+import UserCabinet from './Kabina/views/UserCabinet.vue';
+
+</script>
 
 <template>
   <div data-aos = "fade-down" class="div">
     <h1>Кабинет</h1>
+    <UserCabinet/>
   </div>
     
 </template>

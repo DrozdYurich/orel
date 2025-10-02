@@ -1,8 +1,9 @@
+import { apiClient } from '@/main'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useKalendarStore = defineStore('kalendar', () => {
-  // Состояние
+  const loading = ref()
   const showKalendar = ref(false)
   const data = ref([{
     id: 1,
@@ -25,6 +26,20 @@ export const useKalendarStore = defineStore('kalendar', () => {
     description: 'Праздничные мероприятия по всему городу',
     location: 'Центральная площадь'
   }])
+  const fetchEvents = async () => {
+      loading.value = true
+    
+      try {
+        const response = await apiClient.get('/dates/all') // ← путь к эндпоинту
+        console.log(response.data)
+        events.value = response.data.items // предполагается, что сервер возвращает массив
+      } catch (err) {
+        console.error('Ошибка при загрузке событий:', err)
+        
+      } finally {
+        loading.value = false
+      }
+    }
   function setShow(value) {
   if (value === true || value === false) {
     // Явно задано булево → устанавливаем
@@ -40,7 +55,10 @@ export const useKalendarStore = defineStore('kalendar', () => {
 const getKal = computed(() => {
     return showKalendar.value
   })
+  const getloading = computed(() => {
+    return loading.value
+  })
   return {
-    getdata,setShow,getKal
+    getdata,setShow,getKal,getloading
   }
 })
