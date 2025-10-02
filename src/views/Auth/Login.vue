@@ -8,19 +8,19 @@
 
     <form @submit.prevent="handleSubmit" class="auth-form">
       <div class="form-group">
-        <label for="login">Логин</label>
+        <label for="username">Логин</label>
         <div class="input-wrapper">
           <i class="pi pi-user"></i>
           <input
-            id="login"
-            v-model="login"
+            id="username"
+            v-model="username"
             type="text"
             placeholder="Ваш логин"
-            :class="{ error: errors.login }"
+            :class="{ error: errors.username }"
             @blur="validateLogin"
           />
         </div>
-        <span v-if="errors.login" class="error-message">{{ errors.login }}</span>
+        <span v-if="errors.username" class="error-message">{{ errors.username }}</span>
       </div>
 
       <div class="form-group">
@@ -50,17 +50,17 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 const auth = useAuthStore()
-const login = ref('')
+const username = ref('')
 const password = ref('')
 const errors = ref({})
 
 const validateLogin = () => {
-  if (!login.value.trim()) {
-    errors.value.login = 'Логин обязателен'
-  } else if (login.value.length < 3) {
-    errors.value.login = 'Логин должен быть не короче 3 символов'
+  if (!username.value.trim()) {
+    errors.value.username = 'Логин обязателен'
+  } else if (username.value.length < 3) {
+    errors.value.username = 'Логин должен быть не короче 3 символов'
   } else {
-    errors.value.login = ''
+    errors.value.username = ''
   }
 }
 
@@ -77,9 +77,9 @@ const validatePassword = () => {
 const handleSubmit = () => {
   validateLogin()
   validatePassword()
-  if (!errors.value.login && !errors.value.password) {
+  if (!errors.value.username && !errors.value.password) {
    
-   auth.login({user:login.value, password: password.value})
+   auth.login({username:username.value, password: password.value})
   }
 }
 </script>

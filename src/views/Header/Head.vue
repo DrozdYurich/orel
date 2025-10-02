@@ -41,7 +41,7 @@
       <div class="avatar">
         <span class="avatar-text">{{ userInitials }}</span>
       </div>
-      <span class="profile-name">{{ getUser.login || getUser.user || 'Пользователь' }}</span>
+      <span class="profile-name">{{ getUser.username  || 'Пользователь' }}</span>
       <span class="dropdown-icon pi pi-chevron-down"></span>
     </button>
 
@@ -148,35 +148,23 @@ const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
   isProfileMenuOpen.value = false
 }
-
-
 const handleMenuClick = () => {
   isMobileMenuOpen.value = false
   kal.setShow(false)
   closeMenus()
 }
-
 const toggleProfileMenu = () => {
   isProfileMenuOpen.value = !isProfileMenuOpen.value
   isMobileMenuOpen.value = false
 }
-
-
-
-
-
-
-
 const toggleNotifications = () => {
   kal.setShow()
   console.log(getKal.value)
 }
-
 const handleLogout = () => {
   console.log('Logout')
   router.push('/login')
 }
-
 // Lifecycle
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)

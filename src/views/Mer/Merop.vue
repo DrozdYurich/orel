@@ -2,6 +2,12 @@
 import MyFiltr from '../Filter/MyFiltr.vue';
 import Carta from '../Karta/Carta.vue'
 import MyEvent from '../Event/MyEvent.vue';
+import { onMounted } from 'vue';
+import { useEventsStore } from '@/stores/storeEvents';
+const ev = useEventsStore()
+onMounted(()=>{
+ev.fetchEvents()
+})
 </script>
 
 <template>

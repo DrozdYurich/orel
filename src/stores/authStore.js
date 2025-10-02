@@ -14,8 +14,11 @@ export const useAuthStore = defineStore("auth", () => {
  
 
   async function login(user) {
+    console.log(user)
     try {
-      userStore.setUser(user)
+         const response = await apiClient.post('/user/login', user); // ← передаём user, а не requestData
+          console.log('Успешно :', response.data);
+      userStore.setUser(response.data)
       console.log(userStore.getUser)
       console.log(userStore.getAuth)
       router.push('/')
@@ -32,7 +35,7 @@ export const useAuthStore = defineStore("auth", () => {
     console.log('Успешно создан пользователь:', response.data);
 
     // Только после успешного ответа — обновляем store и редиректим
-    userStore.setUser(user);
+    userStore.setUser(response.data);
     console.log(userStore.getUser);
     console.log(userStore.getAuth);
     router.push('/');

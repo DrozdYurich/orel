@@ -1,113 +1,11 @@
+import { apiClient } from '@/main'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useEventsStore = defineStore('events', () => {
-  // Состояние
-  const events = ref([
-    {
-      id: 1,
-      title: 'Фестиваль уличного искусства',
-      description: 'Крупнейший фестиваль уличного искусства в Центральной России с участием известных художников.',
-      date: '2024-12-15T19:00:00',
-      rating: 4.8,
-      location: 'Орел, Парк культуры и отдыха',
-      category: 'Искусство',
-      organizer: 'Департамент культуры',
-      tags: ['Уличное искусство', 'Бесплатно', 'Для всей семьи'],
-      registered: false,
-      featured: true
-    },
-    {
-      id: 2,
-      title: 'Мастер-класс по гончарному делу',
-      description: 'Научитесь создавать керамические изделия своими руками под руководством опытного мастера.',
-      date: '2024-12-18T14:00:00',
-      rating: 4.6,
-      location: 'Орел, Арт-пространство "Гончар"',
-      category: 'Образование',
-      organizer: 'Арт-пространство "Гончар"',
-      tags: ['Мастер-класс', 'Творчество', 'Ручная работа'],
-      registered: true,
-      featured: false
-    },
-    {
-      id: 3,
-      title: 'Фестиваль уличного искусства',
-      description: 'Крупнейший фестиваль уличного искусства в Центральной России с участием известных художников.',
-      date: '2024-12-15T19:00:00',
-      rating: 1.8,
-      location: 'Орел, Парк культуры и отдыха',
-      category: 'Искусство',
-      organizer: 'Департамент культуры',
-      tags: ['Уличное искусство', 'Бесплатно', 'Для всей семьи'],
-      registered: false,
-      featured: true
-    },
-    {
-      id: 4,
-      title: 'Мастер-класс по гончарному делу',
-      description: 'Научитесь создавать керамические изделия своими руками под руководством опытного мастера.',
-      date: '2024-12-18T14:00:00',
-      rating: 2.6,
-      location: 'Орел, Арт-пространство "Гончар"',
-      category: 'Образование',
-      organizer: 'Арт-пространство "Гончар"',
-      tags: ['Мастер-класс', 'Творчество', 'Ручная работа'],
-      registered: true,
-      featured: false
-    },
-    {
-      id: 5,
-      title: 'Фестиваль уличного искусства',
-      description: 'Крупнейший фестиваль уличного искусства в Центральной России с участием известных художников.',
-      date: '2024-12-15T19:00:00',
-      rating: 3.2,
-      location: 'Орел, Парк культуры и отдыха',
-      category: 'Искусство',
-      organizer: 'Департамент культуры',
-      tags: ['Уличное искусство', 'Бесплатно', 'Для всей семьи'],
-      registered: false,
-      featured: true
-    },
-    {
-      id: 6,
-      title: 'Мастер',
-      description: 'Научитесь создавать керамические изделия своими руками под руководством опытного мастера.',
-      date: '2024-12-18T14:00:00',
-      rating: 5.6,
-      location: 'Орел, Арт-пространство "Гончар"',
-      category: 'Образование',
-      organizer: 'Арт-пространство "Гончар"',
-      tags: ['Мастер-класс', 'Творчество', 'Ручная работа'],
-      registered: true,
-      featured: false
-    },{
-      id: 7,
-      title: 'Фестиваль уличного искусства',
-      description: 'Крупнейший фестиваль уличного искусства в Центральной России с участием известных художников.',
-      date: '2024-12-15T19:00:00',
-      rating: 1.8,
-      location: 'Орел, Парк культуры и отдыха',
-      category: 'Искусство',
-      organizer: 'Департамент культуры',
-      tags: ['Уличное искусство', 'Бесплатно', 'Для всей семьи'],
-      registered: false,
-      featured: true
-    },
-    {
-      id: 8,
-      title: 'Мастер-класс по гончарному делу',
-      description: 'Научитесь создавать керамические изделия своими руками под руководством опытного мастера.',
-      date: '2024-12-18T14:00:00',
-      rating: 3.6,
-      location: 'Орел, Арт-пространство "Гончар"',
-      category: 'Образование',
-      organizer: 'Арт-пространство "Гончар"',
-      tags: ['Мастер-класс', 'Творчество', 'Ручная работа'],
-      registered: true,
-      featured: false
-    }
-  ])
+  const loading = ref(false)
+  const events = ref([]
+  )
   const filters = ref({
     startDate: '',
     endDate: '',
@@ -132,7 +30,20 @@ export const useEventsStore = defineStore('events', () => {
       return true
     })
   })
-
+const fetchEvents = async () => {
+    loading.value = true
+  
+    try {
+      const response = await apiClient.get('/events') // ← путь к эндпоинту
+      console.log(response.data)
+      events.value = response.data.items // предполагается, что сервер возвращает массив
+    } catch (err) {
+      console.error('Ошибка при загрузке событий:', err)
+      
+    } finally {
+      loading.value = false
+    }
+  }
   const hasActiveFilters = computed(() => {
     return filters.value.startDate || filters.value.endDate || filters.value.minRating > 0
   })
@@ -152,6 +63,9 @@ export const useEventsStore = defineStore('events', () => {
   const getEvent = computed(() => {
     return events.value
   })
+    const getloading = computed(() => {
+    return loading.value
+  })
   const registerForEvent = (eventId) => {
     const event = events.value.find(e => e.id === eventId)
     if (event) {
@@ -161,6 +75,8 @@ export const useEventsStore = defineStore('events', () => {
 
   return {
     events,
+    getloading,
+    fetchEvents,
     filters,
     filteredEvents,
     hasActiveFilters,

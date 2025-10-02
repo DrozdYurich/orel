@@ -20,7 +20,7 @@
                     <span class="pi pi-star-fill"></span>
                     <span class="rating-value">{{ topEvents[1]?.rating }}</span>
                   </div>
-                  <p class="event-description">{{ topEvents[1]?.description }}</p>
+                 
                   <div class="event-stats">
                     <div class="stat">
                       <span class="pi pi-users"></span>
@@ -57,7 +57,7 @@
                     <span class="pi pi-star-fill"></span>
                     <span class="rating-value">{{ topEvents[0]?.rating }}</span>
                   </div>
-                  <p class="event-description">{{ topEvents[0]?.description }}</p>
+                
                   <div class="event-stats">
                     <div class="stat">
                       <span class="pi pi-users"></span>
@@ -91,7 +91,7 @@
                     <span class="pi pi-star-fill"></span>
                     <span class="rating-value">{{ topEvents[2]?.rating }}</span>
                   </div>
-                  <p class="event-description">{{ topEvents[2]?.description }}</p>
+                 
                   <div class="event-stats">
                     <div class="stat">
                       <span class="pi pi-users"></span>
