@@ -10,7 +10,7 @@
     <TopThree :top-events="topEvents"/>
 
     <!-- Остальной рейтинг -->
-   <OtherRating :event="otherEvents" :rank="otherEvents.rating"/>
+   <OtherRating   v-for="rt in otherEvents" :event="rt" />
   </div>
 </template>
 

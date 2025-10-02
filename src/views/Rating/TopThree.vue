@@ -3,7 +3,7 @@
         <h2 class="section-title">Топ-3 мероприятия</h2>
         <div class="podium">
           <!-- Второе место -->
-          <div class="podium-item second-place">
+          <div data-aos="fade-right" data-aos-delay="500" class="podium-item second-place">
             <div class="podium-pedestal">
               <div class="pedestal-base"></div>
               <div class="rank-badge">2</div>
@@ -37,7 +37,7 @@
           </div>
   
           <!-- Первое место -->
-          <div class="podium-item first-place">
+          <div data-aos="fade-down" data-aos-delay="900" class="podium-item first-place">
             <div class="podium-pedestal">
               <div class="pedestal-base"></div>
               <div class="rank-badge">1</div>
@@ -74,7 +74,7 @@
           </div>
   
           <!-- Третье место -->
-          <div class="podium-item third-place">
+          <div data-aos="fade-left" data-aos-delay="50" class="podium-item third-place">
             <div class="podium-pedestal">
               <div class="pedestal-base"></div>
               <div class="rank-badge">3</div>
@@ -334,14 +334,7 @@ const podiumClasses = computed(() => ({
     animation: crownGlow 2s ease-in-out infinite alternate;
   }
   
-  @keyframes crownGlow {
-    from {
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    }
-    to {
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-    }
-  }
+ 
   
   .event-info {
     padding: 1.5rem;
@@ -431,17 +424,6 @@ const podiumClasses = computed(() => ({
     }
   }
   
-  /* Анимации */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
   
   .podium-item {
     animation: fadeInUp 0.6s ease-out;

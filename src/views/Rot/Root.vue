@@ -1,18 +1,18 @@
 <template>
   <div class="routes-grid">
     <div>
-      <OneRouting 
+      <OneRouting data-aos = "fade-right"
         v-for="route in routes" 
         :key="route.id" 
         :route="route"
       />
     </div>
-    <div>
+    <div data-aos = "fade-down">
       <h1>Ajnj</h1>
     </div>
     <div>
-
-      <FiltrRout/>
+ 
+      <FiltrRout data-aos = "fade-left"/>
     </div>
   </div>
 </template>

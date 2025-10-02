@@ -27,23 +27,7 @@
 
       <!-- Правая секция -->
       <div class="right-section">
-        <!-- Поиск -->
-        <div class="search-container" :class="{ active: isSearchActive }">
-          <button class="search-toggle" @click="toggleSearch">
-            <span class="search-icon pi pi-search"></span>
-          </button>
-          <div class="search-input-wrapper">
-            <input 
-              v-model="searchQuery"
-              type="text" 
-              placeholder="Поиск мероприятий..." 
-              class="search-input"
-              @focus="isSearchActive = true"
-              @blur="onSearchBlur"
-            >
-            <span class="search-close pi pi-times" @click="closeSearch"></span>
-          </div>
-        </div>
+        
 
         <!-- Уведомления -->
         <div class="notifications">
@@ -139,7 +123,7 @@ const navItems = [
     route: 'vict',
   },
   {
-    label: 'Представители',
+    label: 'Живописные места',
     icon: 'pi pi-users',
     route: 'peopl',
   },
@@ -220,7 +204,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   right: 0;
-  z-index: var(--z-sticky);
+  z-index: 1000;
   background: var(--bg-primary);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-light);

@@ -1,7 +1,29 @@
-<script setup></script>
+<script setup>
+import HeadPlace from './HeadPlace.vue';
+import PlaceOne from './placeOne.vue';
+import { usePlaceStore } from '@/stores/storePlace';
+ const {getPlace}= usePlaceStore()
+</script>
 
 <template>
-  <h1>Представители</h1>
+  <div class="div">
+    <HeadPlace/>
+    <div class="place"> 
+        <PlaceOne   v-for="value in getPlace" :key="value.id" :place="value" />
+    </div>
+  </div>
+    
 </template>
 
-<style scoped></style>
+<style scoped>
+.div{
+  margin-top: 100px;
+}
+.place {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Две колонки */
+  gap: 1rem;
+}
+
+
+</style>

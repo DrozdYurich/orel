@@ -1,6 +1,6 @@
 <template>
-    <div class="rating-item" :class="{ featured: event.featured }">
-      <div class="rank-number">#{{ rank }}</div>
+    <div data-aos = "flip-up" class="rating-item" >
+      <div class="rank-number">#{{ event.rating }}</div>
       <div class="event-content">
         <div class="event-image">
           <img :src="event.image" :alt="event.title" />
@@ -44,16 +44,6 @@
         return requiredFields.every(field => field in value)
       }
     },
-    
-    // Ранг в рейтинге
-    rank: {
-      type: [Number, String],
-      required: true,
-      validator: (value) => {
-        return Number(value) > 0
-      }
-    },
-    
     // Опциональные пропсы
     showRank: {
       type: Boolean,
@@ -91,7 +81,7 @@
       default: () => ({})
     }
   })
-  
+      console.log(props.rank);
   // Emits для обработки событий
   const emit = defineEmits(['details-click', 'rank-click', 'image-click'])
   
@@ -146,6 +136,7 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    margin-bottom: 1rem;
     background: var(--bg-primary);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);

@@ -1,7 +1,13 @@
 <script setup></script>
 
 <template>
-  <h1>Home1</h1>
+  <div class="div">
+    <h1>Home1</h1>
+  </div>
+    
 </template>
 
-<style scoped></style>
+<style scoped>
+.div{
+  margin-top: 100px;
+}</style>

@@ -8,14 +8,16 @@ import MyEvent from '../Event/MyEvent.vue';
   <h1>Мероприятия Орла</h1>
   <div class="main-container">
     <div class="content-grid">
-      <div class="events-section">
+      <div data-aos = "fade-right" class="events-section">
         <Carta/>
       </div>
-      <div class="filters-section">
-        <MyFiltr/>
+      <div data-aos = "fade-left" class="filters-section">
+        <MyFiltr />
       </div>
     </div>
-    <MyEvent/>
+    <div data-aos = "fade-up">
+      <MyEvent />
+    </div>
   </div>
 </template>
 
