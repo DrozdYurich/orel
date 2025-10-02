@@ -286,21 +286,6 @@ const closeModal = () => {
 
 
 
-.genetic-code-title h2::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, #1e3a8a, #4a90e2, #87ceeb, #1e3a8a);
-  border-radius: 12px;
-  z-index: -1;
-  opacity: 0.3;
-  animation: borderGlow 3s ease-in-out infinite alternate;
-}
-
-
 .user-cabinet {
   max-width: 1400px;
   margin: 0 auto;
