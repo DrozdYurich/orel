@@ -11,7 +11,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import axios from 'axios';
 export const apiClient = axios.create({
-  baseURL: 'http://10.11.121.199:8000', 
+  baseURL: 'http://192.168.3.116:8000', 
 });
 const app = createApp(App)
 const pinia = createPinia()

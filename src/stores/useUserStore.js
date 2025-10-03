@@ -23,6 +23,7 @@ export const useUserStore = defineStore("user", () => {
   function removeUser() {
     user.value = null;
     isauth.value = false; // ✅
+    console.log('sss')
     localStorage.removeItem("user");
   }
   function updateUser(updatedFields) {

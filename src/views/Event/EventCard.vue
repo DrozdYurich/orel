@@ -42,7 +42,14 @@
           </div>
         </div>
       </div>
-
+<!-- Добавь перед .event-header или после него -->
+<div class="favorite-toggle" @click.stop="toggleFavorite">
+  <i :class="[
+    'pi',
+    isFavorited ? 'pi-heart-fill' : 'pi-heart',
+    'favorite-icon'
+  ]"></i>
+</div>
       <p class="event-description">{{ event.description }}</p>
 
       <div class="event-details">
@@ -66,7 +73,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { useFavoritesStore } from '@/stores/favoritEvents'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   event: {
@@ -137,9 +145,52 @@ const formatTime = (date) => {
 const getCategoryColor = (category) => {
   return categoryColors[category] || '#6b7280'
 }
+const favoritesStore = useFavoritesStore()
+
+// Проверяем, в избранном ли это мероприятие
+const isFavorited = computed(() => {
+  return favoritesStore.isFavorite(props.event.id)
+})
+
+// Переключаем избранное
+const toggleFavorite = () => {
+  favoritesStore.toggleFavorite(props.event.id)
+}
 </script>
 
 <style scoped>
+/* Кнопка избранного */
+.favorite-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.favorite-toggle:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.favorite-icon {
+  font-size: 1.2rem;
+  color: #94a3b8; /* серый */
+  transition: color 0.2s ease;
+}
+
+.favorite-icon.favorited {
+  color: #ec1717; /* красный */
+}
 .event-card-horizontal {
   background: white;
   border-radius: 16px;

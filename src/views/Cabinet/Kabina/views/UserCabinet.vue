@@ -109,6 +109,10 @@
           <span class="btn-icon">🎼</span>
           <span class="btn-text">Подключить госуслуги</span>
         </button>
+        <button class="action-btn ">
+          <span class="btn-icon">💳</span>
+          <span class="btn-text"><RouterLink to="/fav" class="action-btn info">Избранные мероприятия</RouterLink> </span>
+        </button>
       </div>
     </div>
 

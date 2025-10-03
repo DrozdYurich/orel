@@ -5,7 +5,6 @@ import UserCabinet from './Kabina/views/UserCabinet.vue';
 
 <template>
   <div data-aos = "fade-down" class="div">
-    <h1>Кабинет</h1>
     <UserCabinet/>
   </div>
     

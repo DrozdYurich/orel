@@ -6,7 +6,7 @@
         <div class="logo-icon">
           <span class="pi pi-map-marker"></span>
         </div>
-        <span class="logo-text">OrelExplore</span>
+        <span class="logo-text">Культурный код.Орёл</span>
       </router-link>
 
       <!-- Основное меню по центру -->
@@ -28,7 +28,17 @@
       <!-- Правая секция -->
       <div class="right-section">
         
+<div  >
+  <a href="https://t.me/CultOrelBot" target="_blank" rel="noopener noreferrer" class="bot-icon">
+    <i class="pi pi-send"></i> <!-- или используй иконку Telegram, если есть -->
+  </a>
+  <a href="https://vk.com/club233031631" target="_blank" rel="noopener noreferrer" class="bot-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+  <path d="M15.5 11c.828 0 1.5-.672 1.5-1.5S16.328 8 15.5 8s-1.5.672-1.5 1.5.672 1.5 1.5 1.5zm-7 0c.828 0 1.5-.672 1.5-1.5S9.328 8 8.5 8s-1.5.672-1.5 1.5.672 1.5 1.5 1.5zm10.5 3v6h-2v-5.5c0-.828-.672-1.5-1.5-1.5s-1.5.672-1.5 1.5V19h-2v-4c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5zM8.5 13c-1.933 0-3.5 1.567-3.5 3.5V19H3v-2.5c0-1.933 1.567-3.5 3.5-3.5s3.5 1.567 3.5 3.5V19H8v-2.5c0-.828-.672-1.5-1.5-1.5z"/>
+</svg>
 
+  </a>
+</div>
         <!-- Уведомления -->
      <div class="notifications">
   <button class="notification-btn" @click="toggleNotifications">
@@ -89,7 +99,7 @@ import { useVictStore } from '@/stores/storeVict'
 import { useEventsStore } from '@/stores/storeEvents'
 import { useRoutingStore } from '@/stores/storeRouting'
 import { usePlaceStore } from '@/stores/storePlace'
-
+import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/useUserStore' 
 const router = useRouter()
@@ -104,9 +114,9 @@ const isScrolled = ref(false)
 console.log(getAuth.value,":a")
 console.log(getUser.value,":u")
 // User data
-const userName = 'Алексей'
+const sss = useUserStore()
 const userInitials = computed(() => 
-  userName.split(' ').map(n => n[0]).join('').toUpperCase()
+  getUser.value.username.split(' ').map(n => n[0]).join('').toUpperCase()
 )
 
 // Navigation items
@@ -169,6 +179,7 @@ const toggleNotifications = () => {
 const handleLogout = () => {
   console.log('Logout')
   router.push('/login')
+  sss.logout()
 }
 // Lifecycle
 onMounted(() => {
@@ -189,7 +200,9 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-
+.bot-icon{
+  margin-right: 1rem;
+}
 .kalendar{
   padding: 10px;
 }
@@ -221,7 +234,19 @@ onUnmounted(() => {
   justify-content: space-between;
   height: 80px;
   position: relative;
+  gap: 4rem;
 }
+.bot-icons {
+  position: fixed;
+  top: 80px; /* чуть ниже хедера (80px — высота хедера) */
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1001;
+}
+
+
 
 /* Logo */
 .logo {
@@ -258,6 +283,7 @@ onUnmounted(() => {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+ 
 }
 
 /* Navigation Menu */

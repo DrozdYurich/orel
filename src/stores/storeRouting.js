@@ -7,20 +7,24 @@ export const useRoutingStore = defineStore('routing', () => {
   const routing = ref([
     
   ])
-  const fetchRout = async () => {
-      loading.value = true
-    
-      try {
-        const response = await apiClient.get('/walking-routes') // ← путь к эндпоинту
-        console.log(response.data)
-        routing.value = response.data.items // предполагается, что сервер возвращает массив
-      } catch (err) {
-        console.error('Ошибка при загрузке событий:', err)
-        
-      } finally {
-        loading.value = false
-      }
-    }
+const fetchRout = async () => {
+  loading.value = true;
+
+  try {
+    // Выполняем запрос и ждём минимум 1500 мс
+    const [response] = await Promise.all([
+      apiClient.get('/walking-routes'),
+      new Promise(resolve => setTimeout(resolve, 1500)) // ← таймаут 1.5 секунды
+    ]);
+
+    console.log(response.data);
+    routing.value = response.data.items || response.data; // защита на случай, если данные — массив напрямую
+  } catch (err) {
+    console.error('Ошибка при загрузке маршрутов:', err);
+  } finally {
+    loading.value = false;
+  }
+};
   const getRout = computed(() => {
     return routing.value
   })

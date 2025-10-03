@@ -1,6 +1,9 @@
 <template>
- 
-  <div  class="rating-page">
+  <div>
+ <div  class="load">
+     <MyLoad/>
+    </div>
+  <div   class="rating-page">
     <!-- Заголовок -->
     <div class="page-header">
       <h1 class="page-title">Рейтинг мероприятий</h1>
@@ -13,6 +16,7 @@
     <!-- Остальной рейтинг -->
    <OtherRating   v-for="rt in otherEvents" :event="rt" />
   </div>
+   </div>
 </template>
 
 <script setup>
@@ -20,8 +24,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useEventsStore } from '@/stores/storeEvents'
 import TopThree from './TopThree.vue';
 import OtherRating from './OtherRating.vue';
+import { storeToRefs } from 'pinia';
+import MyLoad from '@/Load/MyLoad.vue';
 const ev = useEventsStore()
-const {getEvent} = useEventsStore();
+const {loading} = storeToRefs(useEventsStore());
 const events = computed(() => ev.getEvent)
 
 const topEvents = computed(() => {

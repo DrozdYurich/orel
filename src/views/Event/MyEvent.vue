@@ -1,17 +1,22 @@
 <template>
-  <div class="events-container">
-    <h1>Мероприятия в Орле</h1>
-    <div class="events-info" v-if="filteredEvents.length === 0">
-      <p>Мероприятия не найдены по выбранным фильтрам</p>
+  <div>
+    <div>
+      
     </div>
-    <div  class="events-grid" v-else>
-      <EventCard  
-        v-for="(event,i) in filteredEvents" 
-        :key="event.id" 
-        :event="event"
-        :ind="i"
-        @register="handleRegister"
-      />
+    <div class="events-container">
+      <h1>Мероприятия в Орле</h1>
+      <div class="events-info" v-if="filteredEvents.length === 0">
+        <p>Мероприятия не найдены по выбранным фильтрам</p>
+      </div>
+      <div  class="events-grid" v-else>
+        <EventCard  
+          v-for="(event,i) in filteredEvents" 
+          :key="event.id" 
+          :event="event"
+          :ind="i"
+          @register="handleRegister"
+        />
+      </div>
     </div>
   </div>
 </template>

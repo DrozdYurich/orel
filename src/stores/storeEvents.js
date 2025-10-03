@@ -31,19 +31,24 @@ export const useEventsStore = defineStore('events', () => {
     })
   })
 const fetchEvents = async () => {
-    loading.value = true
-  
-    try {
-      const response = await apiClient.get('/events') // ← путь к эндпоинту
-      console.log(response.data)
-      events.value = response.data.items // предполагается, что сервер возвращает массив
-    } catch (err) {
-      console.error('Ошибка при загрузке событий:', err)
-      
-    } finally {
-      loading.value = false
-    }
+  loading.value = true;
+
+  try {
+    // Выполняем запрос и ждём минимум 1500 мс
+    const [response] = await Promise.all([
+      apiClient.get('/events'),
+      new Promise(resolve => setTimeout(resolve, 1500)) // ← 1.5 секунды
+    ]);
+
+    console.log(response.data);
+    events.value = response.data.items; // или просто response.data, если сервер возвращает массив напрямую
+  } catch (err) {
+    console.error('Ошибка при загрузке событий:', err);
+    loading.value = false;
+  } finally {
+    loading.value = false;
   }
+};
   const hasActiveFilters = computed(() => {
     return filters.value.startDate || filters.value.endDate || filters.value.minRating > 0
   })
@@ -75,6 +80,7 @@ const fetchEvents = async () => {
 
   return {
     events,
+    loading,
     getloading,
     fetchEvents,
     filters,

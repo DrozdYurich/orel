@@ -2,29 +2,40 @@
 import MyFiltr from '../Filter/MyFiltr.vue';
 import Carta from '../Karta/Carta.vue'
 import MyEvent from '../Event/MyEvent.vue';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useEventsStore } from '@/stores/storeEvents';
+import { storeToRefs } from 'pinia';
+import MyLoad from '@/Load/MyLoad.vue';
 const ev = useEventsStore()
+const {getloading}  = storeToRefs(useEventsStore())
+const load = computed(()=>getloading.value)
 onMounted(()=>{
 ev.fetchEvents()
 })
 </script>
 
 <template>
-  <h1>Мероприятия Орла</h1>
-  <div class="main-container">
-    <div class="content-grid">
-      <div data-aos = "fade-right" class="events-section">
-        <Carta/>
-      </div>
-      <div data-aos = "fade-left" class="filters-section">
-        <MyFiltr />
+  <div>
+     <div v-if="load" class="load">
+      <MyLoad/>
+     </div>
+    <div v-else>
+      <h1>Мероприятия Орла</h1>
+      <div class="main-container">
+        <div class="content-grid">
+          <div data-aos = "fade-right" class="events-section">
+            <Carta/>
+          </div>
+          <div data-aos = "fade-left" class="filters-section">
+            <MyFiltr />
+          </div>
+        </div>
+        <div data-aos = "fade-up">
+          <MyEvent />
+        </div>
       </div>
     </div>
-    <div data-aos = "fade-up">
-      <MyEvent />
     </div>
-  </div>
 </template>
 
 <style scoped>
@@ -39,7 +50,15 @@ h1 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
+.load {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+   transform: translate(-50%, -50%) scale(0.5); /* 1 - 0.3 = 0.7 → на 30% меньше */
+  z-index: 1000000;
+  margin: 0;
+  transform-origin: center; /* чтобы масштабирование было от центра */
+}
 .main-container {
   width: 100%;
   padding: 1rem;

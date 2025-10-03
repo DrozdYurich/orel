@@ -8,24 +8,25 @@ export const usePlaceStore = defineStore('place', () => {
   const getPlace = computed(() => {
     return place.value
   })
-  const fetchEvents = async () => {
-      loading.value = true
-    
-      try {
-        const response = await apiClient.get('/scenic-spots') // ← путь к эндпоинту
-        
-        place.value = response.data.items // предполагается, что сервер возвращает массив
-        console.log(place.value)
-      } catch (err) {
-        console.error('Ошибка при загрузке событий:', err)
-        
-      } finally {
-        loading.value = false
-      }
-    }
-  const getloading = computed(() => {
-    return loading.value
-  })
+const fetchEvents = async () => {
+  loading.value = true;
+
+  try {
+    // Выполняем запрос и ждём минимум 1500 мс
+    const [response] = await Promise.all([
+      apiClient.get('/scenic-spots'),
+      new Promise(resolve => setTimeout(resolve, 1500)) // ← таймаут 1.5 сек
+    ]);
+
+    place.value = response.data.items || response.data; // защита на случай, если нет .items
+    console.log(place.value);
+  } catch (err) {
+    console.error('Ошибка при загрузке достопримечательностей:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+  const getloading = computed(() =>  loading.value)
   return {
     getloading,
     fetchEvents,

@@ -2,7 +2,7 @@
 
 <template>
   <div class="div">
-    <h1>Home1</h1>
+    <img src="../assets/1.jpg"></img>
   </div>
     
 </template>
@@ -10,4 +10,5 @@
 <style scoped>
 .div{
   margin-top: 100px;
+  max-height: 100vh;
 }</style>
