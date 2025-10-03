@@ -15,7 +15,7 @@ onMounted(async () => {
    
   }
 });
-console.log(getVict,'ffffffffffffffff')
+
 </script>
 
 <template>
@@ -24,8 +24,7 @@ console.log(getVict,'ffffffffffffffff')
      <MyLoad/>
     </div>
     <div v-else class="container">
-      <h1 class="title">Наши достижения</h1>
-  
+      
       <!-- Показываем загрузку или карточки -->
       <div v-if="loading" class="loading">
         Загрузка...

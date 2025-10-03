@@ -43,12 +43,13 @@
         </div>
       </div>
 <!-- Добавь перед .event-header или после него -->
-<div class="favorite-toggle" @click.stop="toggleFavorite">
-  <i :class="[
-    'pi',
-    isFavorited ? 'pi-heart-fill' : 'pi-heart',
-    'favorite-icon'
-  ]"></i>
+<div class="favorite-toggle" @click="toggleFavorite">
+ <i :class="[
+  'pi',
+  isFavorited ? 'pi-heart-fill' : 'pi-heart',
+  'favorite-icon',
+  { favorited: isFavorited }
+]"></i>
 </div>
       <p class="event-description">{{ event.description }}</p>
 
@@ -154,7 +155,7 @@ const isFavorited = computed(() => {
 
 // Переключаем избранное
 const toggleFavorite = () => {
-  favoritesStore.toggleFavorite(props.event.id)
+  favoritesStore.toggleFavorite(props.event)
 }
 </script>
 

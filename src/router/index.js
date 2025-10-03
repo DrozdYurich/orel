@@ -9,6 +9,8 @@ import Profil from '@/views/profile/Profil.vue'
 import AuthForm from '@/views/Auth/AuthForm.vue'
 import Cabinet from '@/views/Cabinet/Cabinet.vue'
 import MyFavor from '@/views/fav/MyFavor.vue'
+import Mybonus from '@/views/Bonuss/Mybonus.vue'
+import MyParser from '@/views/Parser/MyParser.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -61,6 +63,16 @@ const router = createRouter({
       path: '/fav',
       name: 'fav',
       component: MyFavor,
+    },
+     {
+      path: '/bonus',
+      name: 'bonus',
+      component: Mybonus,
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: MyParser,
     },
   ],
 })

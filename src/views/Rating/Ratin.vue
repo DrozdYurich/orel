@@ -1,9 +1,7 @@
 <template>
   <div>
- <div  class="load">
-     <MyLoad/>
-    </div>
-  <div   class="rating-page">
+
+  <div  class="rating-page">
     <!-- Заголовок -->
     <div class="page-header">
       <h1 class="page-title">Рейтинг мероприятий</h1>

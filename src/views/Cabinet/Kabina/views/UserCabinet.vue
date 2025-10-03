@@ -17,7 +17,7 @@
     </div>
 
     <!-- Основная информация пользователя и DNA -->
-    <div class="FIO_DNK">
+    <div  data-aos = "fade-right" class="FIO_DNK">
       <div class="user-info-card">
         <div class="card-header">
           <h3 class="card-title">👤 Персональные данные</h3>
@@ -64,7 +64,7 @@
         </div>
       </div>
 
-      <div class="DNK-card">
+      <div  data-aos = "fade-right" class="DNK-card">
         <div class="genetic-code-title">
             <h2>Культурный код</h2>
         </div>
@@ -77,7 +77,7 @@
     </div>
 
     <!-- Действия -->
-    <div class="actions-section">
+    <div  data-aos = "fade-right" class="actions-section">
       <h3 class="section-title">⚡ Быстрые действия</h3>
       <div class="actions-grid">
         <button @click="editProfile" class="action-btn primary">
@@ -102,7 +102,7 @@
 
         <button class="action-btn success">
           <span class="btn-icon">💳</span>
-          <span class="btn-text">Добавить пушкинскую карту</span>
+          <span class="btn-text" @click="goParser">Орлиный глаз</span>
         </button>
 
         <button class="action-btn uslugi">
@@ -117,7 +117,7 @@
     </div>
 
     <!-- Модальное окно редактирования -->
-    <div v-if="showEditModal" class="modal-overlay" @click.self="closeModal">
+    <div  data-aos = "fade-right" v-if="showEditModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal">
         <div class="modal-header">
           <h3 class="modal-title">✏️ Редактирование профиля</h3>
@@ -154,7 +154,7 @@
     </div>
 
     <!-- Модальное окно формы заявки -->
-    <div v-if="showApplicationFormModal" class="modal-overlay" @click.self="showApplicationFormModal = false">
+    <div  data-aos = "fade-right" v-if="showApplicationFormModal" class="modal-overlay" @click.self="showApplicationFormModal = false">
       <div class="modal">
         <div class="modal-header">
           <h3 class="modal-title">📋 Создать заявку на мероприятие</h3>
@@ -168,8 +168,8 @@
     <div class="components-section">
       <h3 class="section-title">🎯 Активности и достижения</h3>
       <div class="components-grid">
-        <Achievements />
-        <DailyBonus />
+        <Achievements  data-aos = "fade-right" />
+        <DailyBonus  data-aos = "fade-right" />
         <!-- ApplicationForm больше не отображается здесь постоянно -->
       </div>
     </div>
@@ -185,7 +185,8 @@ import Achievements from '../components/Achievements.vue'
 import DailyBonus from '../components/DailyBonus.vue'
 import ApplicationForm from '../components/ApplicationForm.vue'
 import DNK from '../components/DNK.vue'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const authStore = useAuthStore()
 const { getUser } = storeToRefs(useUserStore())
 const { updateProfile, updatePassword } = authStore
@@ -199,7 +200,9 @@ const editForm = ref({
   email: '',
   password: ''
 })
-
+const goParser=()=>{
+  router.push('/admin')
+}
 const statusText = computed(() => {
   return getUser.is_representative ? 'Официальный представитель' : 'Обычный пользователь'
 })

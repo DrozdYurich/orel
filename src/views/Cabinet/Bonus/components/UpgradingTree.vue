@@ -143,19 +143,19 @@
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 
 // Импортируем изображения орлов (замените на ваши пути)
-import eagle1 from '@/img/Eagles/TreeEagle.png'
-import eagle2 from '@/img/Eagles/StoneEagle.png'
-import eagle3 from '@/img/Eagles/СopperEagle.png'
-import eagle4 from '@/img/Eagles/SiliverEagle.png'
-import eagle5 from '@/img/Eagles/GoldEagle.png'
-import eagle6 from '@/img/Eagles/TitanEagle.png'
-import eagle7 from '@/img/Eagles/LazurEagle.png'
-import eagle8 from '@/img/Eagles/GranatEagle.png'
-import eagle9 from '@/img/Eagles/BriliantEagle.png'
+import eagle1 from '../../../../assets/Eagles/TreeEagle.png'
+import eagle2 from '../../../../assets/Eagles/StoneEagle.png'
+import eagle3 from '../../../../assets/Eagles/СopperEagle.png'
+import eagle4 from '../../../../assets/Eagles/SiliverEagle.png'
+import eagle5 from '../../../../assets/Eagles/GoldEagle.png'
+import eagle6 from '../../../../assets/Eagles/TitanEagle.png'
+import eagle7 from '../../../../assets/Eagles/LazurEagle.png'
+import eagle8 from '../../../../assets/Eagles/GranatEagle.png'
+import eagle9 from '../../../../assets/Eagles/BriliantEagle.png'
 
 // ... добавьте остальные изображения
 
-import { useBonusStore } from '@/stores/storeBonus'
+import { useBonusStore } from '../stores/storeBonus'
 
 const store = useBonusStore()
 const bonusText = computed(() => store.bonusText(currentDay.value))

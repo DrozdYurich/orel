@@ -8,7 +8,7 @@
 <script setup>
 import { computed, defineProps } from 'vue'
 
-import { useBonusStore } from '@/stores/storeBonus'
+import { useBonusStore } from '../stores/storeBonus'
 
 
 

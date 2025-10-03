@@ -4,7 +4,8 @@
       <!-- Логотип -->
       <router-link to="/" class="logo">
         <div class="logo-icon">
-          <span class="pi pi-map-marker"></span>
+          
+          <img class="pi pi-map-marker" src="../../assets/logo.svg"></img>
         </div>
         <span class="logo-text">Культурный код.Орёл</span>
       </router-link>
@@ -40,20 +41,28 @@
   </a>
 </div>
         <!-- Уведомления -->
+        
      <div class="notifications">
   <button class="notification-btn" @click="toggleNotifications">
     <span class="notification-icon pi pi-calendar"></span>
+    
+   
+  </button>
+  <button class="notification-btn" @click="goBonus">
+   
+    <span class="bonus-icon pi pi-gift"></span> <!-- ✅ Иконка бонуса -->
+   
   </button>
 </div>
        <!-- Условный рендеринг: профиль или кнопка входа -->
   <div v-if="getAuth" class="profile-menu"  >
     <button class="profile-btn" @click="toggleProfileMenu">
-      <div class="avatar">
-        <span class="avatar-text">{{ userInitials }}</span>
-      </div>
-      <span class="profile-name">{{ getUser.username  || 'Пользователь' }}</span>
-      <span class="dropdown-icon pi pi-chevron-down"></span>
-    </button>
+    <div class="avatar">
+      <span class="avatar-text">{{ userInitials }}</span>
+    </div>
+    <span class="profile-name">{{ getUser.username || 'Пользователь' }}</span>
+    <span class="dropdown-icon pi pi-chevron-down"></span>
+  </button>
 
     <div class="profile-dropdown" :class="{ active: isProfileMenuOpen }">
       <router-link to="/profile" class="dropdown-item" @click="closeMenus">
@@ -65,7 +74,9 @@
         <span class="dropdown-icon pi pi-sign-out"></span>
         Выйти
       </button>
+     
     </div>
+    
   </div>
 
   <!-- Кнопка "Войти", если не авторизован -->
@@ -118,7 +129,9 @@ const sss = useUserStore()
 const userInitials = computed(() => 
   getUser.value.username.split(' ').map(n => n[0]).join('').toUpperCase()
 )
-
+const goBonus=()=>{
+  router.push('/bonus')
+}
 // Navigation items
 const navItems = [
   {
@@ -200,6 +213,23 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Убираем фиксированные размеры, если они не нужны */
+  padding: 6px; /* небольшой отступ вместо 40px */
+  border-radius: var(--radius-md);
+  background: var(--primary-gradient);
+  color: var(--text-on-gradient);
+  font-size: 1.2rem;
+  box-shadow: var(--shadow-md);
+}
+.logo-icon img {
+  width: 20px; /* или 24px — подберите по вкусу */
+  height: auto;
+  display: block;
+}
 .bot-icon{
   margin-right: 1rem;
 }
@@ -259,6 +289,7 @@ onUnmounted(() => {
   font-size: 1.5rem;
   transition: all var(--transition-fast);
   z-index: var(--z-dropdown);
+  margin-right: 20px;
 }
 
 .logo:hover {
@@ -292,7 +323,7 @@ onUnmounted(() => {
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 4px;
+  gap: 0px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -306,7 +337,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 6px 8px;
   text-decoration: none;
   color: var(--text-secondary);
   font-weight: 500;
@@ -461,7 +492,7 @@ onUnmounted(() => {
 
 /* Notifications */
 .notifications {
-  position: relative;
+  display: flex;
 }
 
 .notification-btn {
