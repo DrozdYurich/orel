@@ -13,11 +13,11 @@
       <div  class="hero-content">
    
             <h1  class="hero-title">
-              Живописные места
-              <span class="gradient-text">России</span>
+              Живописные места города
+              <span class="gradient-text">Орёл</span>
             </h1>
     
-        <p  class="hero-subtitle">Откройте для себя удивительную красоту российских пейзажей</p>
+        <p  class="hero-subtitle">Откройте для себя удивительную красоту орловских пейзажей</p>
       </div>
     </section>  
   </div>

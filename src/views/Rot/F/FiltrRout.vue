@@ -110,109 +110,84 @@
       </div>
     </div>
   </template>
-  
   <script setup>
-  import { ref, computed, watch } from 'vue'
-  
-  const emit = defineEmits(['filter-change'])
-  
-  // Реактивные данные фильтров
-  const filters = ref({
-    maxDistance: 50,
-    maxDuration: 480,
-    difficulty: []
-  })
-  
-  // Опции для фильтров
-  const difficultyOptions = [
-    { 
-      value: 'easy', 
-      label: 'Легкий', 
-      icon: 'pi-walking',
-      color: 'var(--success-gradient)'
-    },
-    { 
-      value: 'medium', 
-      label: 'Средний', 
-      icon: 'pi-mountain',
-      color: 'var(--accent-gradient)'
-    },
-    { 
-      value: 'hard', 
-      label: 'Сложный', 
-      icon: 'pi-arrow-up-right',
-      color: 'var(--secondary-gradient)'
-    }
-  ]
-  
-  // Вычисляемые свойства
-  const hasActiveFilters = computed(() => {
-    return filters.value.maxDistance < 50 || 
-           filters.value.maxDuration < 480 || 
-           filters.value.difficulty.length > 0
-  })
-  
-  // Методы
-  const applyFilters = () => {
-    emit('filter-change', { ...filters.value })
+import { ref, computed, watch } from 'vue'
+import { useRoutingStore } from '@/stores/storeRouting'
+
+const routingStore = useRoutingStore()
+
+// Синхронизируем локальные фильтры с хранилищем
+const filters = ref({ ...routingStore.filters })
+
+// Опции сложности
+const difficultyOptions = [
+  { value: 'easy', label: 'Легкий', icon: 'pi-walking' },
+  { value: 'medium', label: 'Средний', icon: 'pi-mountain' },
+  { value: 'hard', label: 'Сложный', icon: 'pi-arrow-up-right' }
+]
+
+// Вычисляемые свойства
+const hasActiveFilters = computed(() => routingStore.hasActiveFilters)
+
+// Применяем фильтры в хранилище
+const applyFilters = () => {
+  routingStore.updateFilters({ ...filters.value })
+}
+
+// Очистка
+const clearFilters = () => {
+  routingStore.clearFilters()
+  filters.value = { ...routingStore.filters }
+}
+
+// Вспомогательные функции
+const formatDuration = (minutes) => {
+  return minutes < 60 ? `${minutes} мин` : `${minutes / 60} ч`
+}
+
+const getDifficultyLabel = (value) => {
+  return difficultyOptions.find(d => d.value === value)?.label || value
+}
+
+// Управление сложностью
+const toggleDifficulty = (difficulty) => {
+  const index = filters.value.difficulty.indexOf(difficulty)
+  if (index > -1) {
+    filters.value.difficulty.splice(index, 1)
+  } else {
+    filters.value.difficulty.push(difficulty)
   }
-  
-  const clearFilters = () => {
-    filters.value = {
-      maxDistance: 50,
-      maxDuration: 480,
-      difficulty: []
-    }
+  applyFilters()
+}
+
+const removeDifficulty = (difficulty) => {
+  const index = filters.value.difficulty.indexOf(difficulty)
+  if (index > -1) {
+    filters.value.difficulty.splice(index, 1)
     applyFilters()
   }
-  
-  const clearDistanceFilter = () => {
-    filters.value.maxDistance = 50
-    applyFilters()
-  }
-  
-  const clearDurationFilter = () => {
-    filters.value.maxDuration = 480
-    applyFilters()
-  }
-  
-  const toggleDifficulty = (difficulty) => {
-    const index = filters.value.difficulty.indexOf(difficulty)
-    if (index > -1) {
-      filters.value.difficulty.splice(index, 1)
-    } else {
-      filters.value.difficulty.push(difficulty)
-    }
-    applyFilters()
-  }
-  
-  const removeDifficulty = (difficulty) => {
-    const index = filters.value.difficulty.indexOf(difficulty)
-    if (index > -1) {
-      filters.value.difficulty.splice(index, 1)
-      applyFilters()
-    }
-  }
-  
-  const formatDuration = (minutes) => {
-    if (minutes < 60) {
-      return `${minutes} мин`
-    } else {
-      const hours = minutes / 60
-      return `${hours} ч`
-    }
-  }
-  
-  const getDifficultyLabel = (value) => {
-    const difficulty = difficultyOptions.find(d => d.value === value)
-    return difficulty ? difficulty.label : value
-  }
-  
-  // Наблюдатели
-  watch(filters, () => {
-    applyFilters()
-  }, { deep: true })
-  </script>
+}
+
+// Очистка отдельных фильтров
+const clearDistanceFilter = () => {
+  filters.value.maxDistance = 50
+  applyFilters()
+}
+
+const clearDurationFilter = () => {
+  filters.value.maxDuration = 480
+  applyFilters()
+}
+
+// Синхронизация при изменении извне (например, при сбросе)
+watch(
+  () => routingStore.filters,
+  (newFilters) => {
+    filters.value = { ...newFilters }
+  },
+  { deep: true }
+)
+</script>
   
   <style scoped>
   .filters-container.compact {

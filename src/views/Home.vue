@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="hero-section">
+  <div data-aos="fade-left" class="hero-section">
     <img src="../assets/1.jpg" alt="Орёл — город гениев слова" />
     <div class="hero-overlay"></div>
     <div class="hero-content">
