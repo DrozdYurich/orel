@@ -5,7 +5,7 @@ import Dashbord from './Dashbord.vue';
 
 <template>
   <div class="hero-section">
-    <Dashbord/>
+    <Dashbord  data-aos = "fade-right"/>
   </div>
 </template>
 

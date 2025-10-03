@@ -150,7 +150,7 @@ const favoritesStore = useFavoritesStore()
 
 // Проверяем, в избранном ли это мероприятие
 const isFavorited = computed(() => {
-  return favoritesStore.isFavorite(props.event.id)
+  return favoritesStore.isFavorite(props.event)
 })
 
 // Переключаем избранное

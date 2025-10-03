@@ -4,23 +4,29 @@ import { ref, computed } from 'vue'
 
 export const useEventsStore = defineStore('events', () => {
   const loading = ref(false)
-  const events = ref([]
-  )
+  const events = ref([])
+
+  // Добавляем eventType в фильтры
   const filters = ref({
     startDate: '',
     endDate: '',
-    minRating: 0
+    minRating: 0,
+    eventType: '' // ← новое поле
   })
 
-  // Геттеры
   const filteredEvents = computed(() => {
     return events.value.filter(event => {
+      // Фильтр по типу события
+      if (filters.value.eventType && event.event_type !== filters.value.eventType) {
+        return false
+      }
+
       // Фильтр по дате начала
-      if (filters.value.startDate && event.date < filters.value.startDate) {
+      if (filters.value.startDate && event.start_date < filters.value.startDate + 'T00:00:00') {
         return false
       }
       // Фильтр по дате окончания
-      if (filters.value.endDate && event.date > filters.value.endDate + 'T23:59:59') {
+      if (filters.value.endDate && event.start_date > filters.value.endDate + 'T23:59:59') {
         return false
       }
       // Фильтр по рейтингу
@@ -30,30 +36,32 @@ export const useEventsStore = defineStore('events', () => {
       return true
     })
   })
-const fetchEvents = async () => {
-  loading.value = true;
 
-  try {
-    // Выполняем запрос и ждём минимум 1500 мс
-    const [response] = await Promise.all([
-      apiClient.get('/events'),
-      new Promise(resolve => setTimeout(resolve, 1500)) // ← 1.5 секунды
-    ]);
-
-    console.log(response.data);
-    events.value = response.data.items; // или просто response.data, если сервер возвращает массив напрямую
-  } catch (err) {
-    console.error('Ошибка при загрузке событий:', err);
-    loading.value = false;
-  } finally {
-    loading.value = false;
+  const fetchEvents = async () => {
+    loading.value = true
+    try {
+      const [response] = await Promise.all([
+        apiClient.get('/events'),
+        new Promise(resolve => setTimeout(resolve, 1500))
+      ])
+      events.value = response.data.items
+    } catch (err) {
+      console.error('Ошибка при загрузке событий:', err)
+    } finally {
+      loading.value = false
+    }
   }
-};
+
+  // Обновляем hasActiveFilters — учитываем eventType
   const hasActiveFilters = computed(() => {
-    return filters.value.startDate || filters.value.endDate || filters.value.minRating > 0
+    return (
+      filters.value.startDate ||
+      filters.value.endDate ||
+      filters.value.minRating > 0 ||
+      !!filters.value.eventType // ← добавлено
+    )
   })
 
-  // Действия
   const updateFilters = (newFilters) => {
     Object.assign(filters.value, newFilters)
   }
@@ -62,20 +70,17 @@ const fetchEvents = async () => {
     filters.value = {
       startDate: '',
       endDate: '',
-      minRating: 0
+      minRating: 0,
+      eventType: '' // ← сбрасываем
     }
   }
-  const getEvent = computed(() => {
-    return events.value
-  })
-    const getloading = computed(() => {
-    return loading.value
-  })
+
+  const getEvent = computed(() => events.value)
+  const getloading = computed(() => loading.value)
+
   const registerForEvent = (eventId) => {
     const event = events.value.find(e => e.id === eventId)
-    if (event) {
-      event.registered = true
-    }
+    if (event) event.registered = true
   }
 
   return {

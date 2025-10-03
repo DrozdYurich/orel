@@ -100,9 +100,9 @@
           <span class="btn-text">Панель администратора</span>
         </router-link>
 
-        <button class="action-btn success">
+        <button class="action-btn success"  @click="goParser">
           <span class="btn-icon">💳</span>
-          <span class="btn-text" @click="goParser">Орлиный глаз</span>
+          <span class="btn-text">Орлиный глаз</span>
         </button>
 
         <button class="action-btn uslugi">
